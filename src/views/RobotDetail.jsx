@@ -67,7 +67,7 @@ export default function RobotDetail({ v }) {
               <span style={sx('font-family:var(--font-mono);font-size:12px;color:var(--color-text-subtle)')}>{sel.sparkLast}%</span>
             </div>
             <svg viewBox="0 0 200 42" preserveAspectRatio="none" style={sx('width:100%;height:44px;display:block')}>
-              <polyline points={sel.spark} fill="none" stroke="var(--color-action-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+              <polyline points={sel.spark} fill="none" stroke="var(--color-action-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
           <div style={sx('margin-top:16px;display:flex;align-items:center;gap:12px')}>

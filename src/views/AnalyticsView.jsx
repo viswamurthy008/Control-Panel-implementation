@@ -60,7 +60,7 @@ export default function AnalyticsView({ v }) {
           </div>
           <svg viewBox="0 0 280 90" preserveAspectRatio="none" style={sx('width:100%;height:104px;display:block')}>
             <polyline points={v.uptimeArea} fill="color-mix(in srgb,var(--color-action-primary) 12%,transparent)" stroke="none" />
-            <polyline points={v.uptimePts} fill="none" stroke="var(--color-action-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+            <polyline points={v.uptimePts} fill="none" stroke="var(--color-action-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <div style={sx('display:flex;justify-content:space-between;margin-top:8px')}>
             {v.uptimeDays.map((d) => <span key={d} style={sx(AXIS)}>{d}</span>)}

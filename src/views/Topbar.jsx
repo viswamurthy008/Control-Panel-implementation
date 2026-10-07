@@ -45,7 +45,8 @@ export default function Topbar({ v }) {
       </button>
 
       <div style={sx('display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-subtle);flex:none;white-space:nowrap')}>
-        <span style={sx('font-family:var(--font-mono);font-size:13px;color:var(--color-text-default)')}>{v.kpi.active}</span>/{v.kpi.total} online
+        <span style={sx('font-family:var(--font-mono);font-size:13px;color:var(--color-text-default)')}>{v.kpi.active}</span>
+        <span>/</span><span>{v.kpi.total}</span><span>online</span>
       </div>
 
       <button onClick={v.toggleEstop} className={hv('filter:brightness(1.06)')} style={sx(v.estopStyle)}>
