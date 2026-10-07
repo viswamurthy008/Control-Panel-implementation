@@ -1,5 +1,7 @@
 # Orchestrator — Control Panel
 
+[![CI](https://github.com/viswamurthy008/Control-Panel-implementation/actions/workflows/ci.yml/badge.svg)](https://github.com/viswamurthy008/Control-Panel-implementation/actions/workflows/ci.yml)
+
 A floor-operations console for supervising a fleet of humanoid robots, built with React and Vite from a Claude Design prototype.
 
 All data is simulated in the browser: robots move around the floor map, batteries drain and charge, jobs progress and new alerts appear on their own. There is no backend yet.
@@ -69,3 +71,5 @@ The suite (60 tests) drives the app the way a user would with [Vitest](https://v
 ```bash
 npm test
 ```
+
+GitHub Actions runs the tests and a production build on Node 20 and 22 for every push and pull request to `main` (see [`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
