@@ -28,6 +28,14 @@ describe('navigation', () => {
     expect(screen.getByRole('heading', { level: 1, name: heading })).toBeInTheDocument();
   });
 
+  it('shows the signed-in supervisor in the top bar account button', () => {
+    renderApp();
+    const account = screen.getByTitle('Account');
+    expect(account).toHaveTextContent('RM');
+    expect(account).toHaveTextContent('R. Marín');
+    expect(account).toHaveTextContent('Line supervisor');
+  });
+
   it('falls back to the design default plant name', () => {
     renderApp({ plantName: '' });
     expect(screen.getByRole('button', { name: /Meridian — Building 4/ })).toBeInTheDocument();
