@@ -1,7 +1,7 @@
 import React from 'react';
-import { sx, hv } from './sx.js';
+import { sx, hv, fv, cx } from './sx.js';
 
-export { sx, hv };
+export { sx, hv, fv, cx };
 
 // Shared declaration strings from the design.
 export const CARD = 'background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px';
@@ -75,7 +75,7 @@ export function Segmented({ options, radius = 9 }) {
 
 export function BackButton({ onClick, label }) {
   return (
-    <button onClick={onClick} className={hv('color:var(--color-text-default)')} style={sx('display:inline-flex;align-items:center;gap:6px;background:transparent;border:none;color:var(--color-text-subtle);font-size:12.5px;cursor:pointer;padding:0;margin-bottom:14px;font-family:var(--font-sans)')}>
+    <button onClick={onClick} className={hv('color:var(--color-text-default)')} style={sx('min-height:44px;min-width:44px;display:inline-flex;align-items:center;gap:6px;background:transparent;border:none;color:var(--color-text-subtle);font-size:12.5px;cursor:pointer;padding:0;margin-bottom:14px;font-family:var(--font-sans)')}>
       <Icon name="chevLeft" size={15} /><span style={sx('white-space:nowrap')}>{label}</span>
     </button>
   );
@@ -123,11 +123,14 @@ const PATHS = {
   heat: <><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></>,
   person: <><circle cx="12" cy="6" r="3.2"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/></>,
   camera: <><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></>,
+  menu: <path d="M4 6h16M4 12h16M4 18h16"/>,
+  sun: <><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></>,
+  moon: <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>,
 };
 
 export function Icon({ name, size = 18, stroke = 'currentColor', width = 2, style }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={width} strokeLinecap="round" strokeLinejoin="round" style={style}>
+    <svg aria-hidden="true" focusable="false" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth={width} strokeLinecap="round" strokeLinejoin="round" style={style}>
       {PATHS[name]}
     </svg>
   );

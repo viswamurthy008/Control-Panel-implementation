@@ -18,7 +18,7 @@ All data is simulated in the browser: robots move around the floor map, batterie
 - **Maintenance** — service schedule, work orders, spare parts and out-of-service units
 - **Plant rollup** — line performance and output by shift
 - **Shift handover** — carryover items, watch list, notes and sign-off checklist
-- **Everywhere** — command palette (`Ctrl+K` / `⌘K`), plant switcher, global E-stop, and light/dark themes
+- **Everywhere** — collapsible sidebar (remembered between visits), command palette (`Ctrl+K` / `⌘K`), plant switcher, global E-stop, light/dark theme switch, and a top bar that adapts to its width
 
 ## Getting started
 

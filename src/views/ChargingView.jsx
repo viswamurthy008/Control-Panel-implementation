@@ -9,7 +9,7 @@ function Bay({ b }) {
         <span style={sx('font-size:10px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:2px 7px;border-radius:9999px;background:var(--color-bg-muted);color:var(--color-text-subtle)')}>{b.type}</span>
       </div>
       {b.charging && (
-        <div onClick={b.open} style={sx('display:flex;align-items:center;gap:13px;cursor:pointer')}>
+        <div onClick={b.open} style={sx('min-height:44px;display:flex;align-items:center;gap:13px;cursor:pointer')}>
           <div style={sx(`width:62px;height:62px;border-radius:9999px;background:conic-gradient(${b.ringColor} ${b.soc}%, var(--color-bg-muted) 0);display:grid;place-items:center;flex:none`)}>
             <div style={sx('width:46px;height:46px;border-radius:9999px;background:var(--color-bg-default);display:grid;place-items:center;font-family:var(--font-mono);font-weight:600;font-size:13px')}>{b.socLabel}</div>
           </div>
@@ -59,7 +59,7 @@ export default function ChargingView({ v }) {
                 <div style={sx('font-size:11.5px;color:var(--color-text-subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis')}>{q.zone}</div>
               </div>
               <span style={sx(`font-family:var(--font-mono);font-size:12px;font-weight:600;color:${q.battColor}`)}>{q.batt}</span>
-              <button onClick={q.send} className={hv(HOVER_MUTED)} style={sx(BTN_OUTLINE + ';padding:5px 10px;border-radius:7px;font-size:11.5px;white-space:nowrap')}>Dock</button>
+              <button onClick={q.send} className={hv(HOVER_MUTED)} style={sx('min-height:44px;min-width:44px;' + BTN_OUTLINE + ';padding:5px 10px;border-radius:7px;font-size:11.5px;white-space:nowrap')}>Dock</button>
             </div>
           )) : (
             <div style={sx('padding:32px 18px;text-align:center;color:var(--color-text-placeholder);font-size:12.5px')}>No units waiting for a dock.</div>

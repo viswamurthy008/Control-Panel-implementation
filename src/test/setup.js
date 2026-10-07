@@ -13,12 +13,30 @@ function mulberry32(seed) {
   };
 }
 
+// Node 25+ ships its own global localStorage, which shadows jsdom's and is a
+// non-functional stub unless Node is started with --localstorage-file. Use a
+// small in-memory Storage so tests behave the same on every Node version.
+class MemoryStorage {
+  #m = new Map();
+  get length() { return this.#m.size; }
+  key(i) { return [...this.#m.keys()][i] ?? null; }
+  getItem(k) { return this.#m.has(String(k)) ? this.#m.get(String(k)) : null; }
+  setItem(k, v) { this.#m.set(String(k), String(v)); }
+  removeItem(k) { this.#m.delete(String(k)); }
+  clear() { this.#m.clear(); }
+}
+const storage = new MemoryStorage();
+for (const target of [globalThis, window]) {
+  Object.defineProperty(target, 'localStorage', { value: storage, configurable: true, writable: true });
+}
+
 beforeEach(() => {
   vi.spyOn(Math, 'random').mockImplementation(mulberry32(42));
 });
 
 afterEach(() => {
   cleanup();
+  localStorage.clear();
   vi.restoreAllMocks();
   vi.useRealTimers();
 });

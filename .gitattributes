@@ -1,0 +1,2 @@
+# Keep the design snapshot byte-identical to the Claude Design source so diffs stay clean.
+design/** -text

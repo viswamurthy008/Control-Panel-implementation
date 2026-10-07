@@ -22,6 +22,18 @@ import Toasts from './views/Toasts.jsx';
 
 const allExpanded = () => zones.reduce((a, z) => (a[z.id] = true, a), {});
 
+const SIDEBAR_KEY = 'orch.sbCollapsed';
+function readSidebarCollapsed() {
+  try { return localStorage.getItem(SIDEBAR_KEY) === '1'; } catch { return false; }
+}
+function writeSidebarCollapsed(v) {
+  try { localStorage.setItem(SIDEBAR_KEY, v ? '1' : '0'); } catch { /* storage unavailable */ }
+}
+
+const HEADER_PAD_FULL = 22;
+
+const NAV_IDS =['fleet', 'map', 'tasks', 'charge', 'alerts', 'analytics', 'maint', 'rollup', 'handover'];
+
 export default class App extends React.Component {
   static defaultProps = { defaultTheme: 'dark', liveTelemetry: true, plantName: '' };
 
@@ -54,8 +66,11 @@ export default class App extends React.Component {
       mapMode: 'live',
       alertTab: 'incidents',
       rules: initialRules,
+      sbCollapsed: readSidebarCollapsed(),
+      hw: undefined,
     };
     this.toastId = 0;
+    this.headerRef = React.createRef();
   }
 
   rnd(a, b) { return a + Math.random() * (b - a); }
@@ -200,8 +215,37 @@ export default class App extends React.Component {
       else if (e.key === 'Escape') this.setState({ paletteOpen: false, plantMenu: false });
     };
     window.addEventListener('keydown', this.keyH);
+    this.attachHeaderObserver();
   }
-  componentWillUnmount() { clearInterval(this.clockT); clearInterval(this.teleT); window.removeEventListener('keydown', this.keyH); }
+  componentDidUpdate() { this.attachHeaderObserver(); }
+  componentWillUnmount() {
+    clearInterval(this.clockT); clearInterval(this.teleT); window.removeEventListener('keydown', this.keyH);
+    if (this.ro) this.ro.disconnect();
+    // Forget the element so a remount (e.g. React StrictMode in dev) re-observes it.
+    this.ro = null; this.roEl = null;
+  }
+
+  // The top bar adapts to its own width (not the window's), so it reacts to
+  // the sidebar collapsing as well as to window resizes.
+  attachHeaderObserver() {
+    const el = this.headerRef.current;
+    if (!el || el === this.roEl || typeof ResizeObserver === 'undefined') return;
+    if (this.ro) this.ro.disconnect();
+    this.roEl = el;
+    this.ro = new ResizeObserver((entries) => this.onHeaderResize(entries[0]));
+    this.ro.observe(el);
+  }
+
+  // The design measures the content box, but the header's padding itself
+  // changes at the 820px breakpoint (22px → 14px), so between ~848–863px the
+  // layout flips on every frame. Measure the border box, which padding doesn't
+  // affect, minus the full-size padding so the breakpoints stay where the
+  // design puts them.
+  onHeaderResize(entry) {
+    const border = entry.borderBoxSize?.[0]?.inlineSize ?? entry.target.getBoundingClientRect().width;
+    const w = Math.round(border - HEADER_PAD_FULL * 2);
+    if (Math.abs(w - (this.state.hw || 0)) > 4) this.setState({ hw: w });
+  }
 
   tick() {
     this.setState((s) => {
@@ -306,15 +350,18 @@ export default class App extends React.Component {
   }
 
   // ── styling helpers ──
-  navStyle(v) { const on = this.state.view === v; return `display:flex;align-items:center;gap:11px;width:100%;padding:8px 8px;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-sans);font-size:13.5px;font-weight:${on ? 600 : 500};text-align:left;background:${on ? 'var(--color-bg-brand-subtle)' : 'transparent'};color:${on ? 'var(--color-text-brand)' : 'var(--color-text-subtle)'}`; }
+  navStyle(v) { const on = this.state.view === v; const c = this.state.sbCollapsed; return `position:relative;display:flex;align-items:center;justify-content:${c ? 'center' : 'flex-start'};gap:11px;width:100%;min-height:44px;padding:${c ? '0' : '0 8px'};border:none;border-radius:8px;cursor:pointer;font-family:var(--font-sans);font-size:13.5px;font-weight:${on ? 600 : 500};text-align:left;background:${on ? 'var(--color-bg-brand-subtle)' : 'transparent'};color:${on ? 'var(--color-text-brand)' : 'var(--color-text-subtle)'}`; }
   badgeStyle(status) { const map = { active: ['var(--green-500)', '#fff'], idle: ['var(--color-bg-muted)', 'var(--color-text-subtle)'], charging: ['var(--blue-500)', '#fff'], fault: ['var(--red-500)', '#fff'] }; const [bg, fg] = map[status]; return `display:inline-flex;align-items:center;padding:2px 9px;border-radius:9999px;font-size:11px;font-weight:600;letter-spacing:.01em;background:${bg};color:${fg}`; }
   battColor(b) { return b > 50 ? 'var(--green-500)' : (b >= 20 ? 'var(--yellow-500)' : 'var(--red-500)'); }
   statusLabel(s) { return { active: 'Active', idle: 'Idle', charging: 'Charging', fault: 'Fault' }[s]; }
   prioStyle(p) { const m = { High: ['var(--red-500)', 'color-mix(in srgb,var(--red-500) 14%,transparent)'], Medium: ['var(--yellow-700)', 'color-mix(in srgb,var(--yellow-500) 20%,transparent)'], Low: ['var(--color-text-subtle)', 'var(--color-bg-muted)'] }; const [fg, bg] = m[p]; return `padding:1px 8px;border-radius:9999px;font-size:10.5px;font-weight:600;background:${bg};color:${fg}`; }
   ago(ts) { const s = Math.floor((Date.now() - ts) / 1000); if (s < 60) return s + 's ago'; const m = Math.floor(s / 60); if (m < 60) return m + 'm ago'; return Math.floor(m / 60) + 'h ago'; }
-  segStyle(on, pad = '6px 12px', radius = 7) { return `display:flex;align-items:center;gap:6px;padding:${pad};border-radius:${radius}px;border:none;cursor:pointer;font-family:var(--font-sans);font-size:12.5px;font-weight:${on ? 600 : 500};background:${on ? 'var(--color-bg-default)' : 'transparent'};color:${on ? 'var(--color-text-default)' : 'var(--color-text-subtle)'};box-shadow:${on ? '0 1px 2px rgba(0,0,0,.08)' : 'none'}`; }
+  segStyle(on, pad = '6px 12px', radius = 7) { return `display:flex;align-items:center;gap:6px;min-height:44px;padding:${pad};border-radius:${radius}px;border:none;cursor:pointer;font-family:var(--font-sans);font-size:12.5px;font-weight:${on ? 600 : 500};background:${on ? 'var(--color-bg-default)' : 'transparent'};color:${on ? 'var(--color-text-default)' : 'var(--color-text-subtle)'};box-shadow:${on ? '0 1px 2px rgba(0,0,0,.08)' : 'none'}`; }
+
+  themeSeg(on) { return `display:grid;place-items:center;width:44px;height:44px;border-radius:9999px;border:none;cursor:pointer;transition:background .12s,color .12s;background:${on ? 'var(--color-bg-default)' : 'transparent'};outline-offset:-3px;color:${on ? 'var(--color-text-brand)' : 'var(--color-text-subtle)'};box-shadow:${on ? 'inset 0 0 0 4px var(--color-bg-muted), 0 0 0 0 transparent' : 'none'}`; }
 
   go = (view, extra) => this.setState({ view, ...extra });
+  toggleSidebar = () => this.setState((st) => { const v = !st.sbCollapsed; writeSidebarCollapsed(v); return { sbCollapsed: v }; });
   openRobot = (uid) => this.setState({ selected: uid, view: 'detail' });
 
   renderVals() {
@@ -324,6 +371,7 @@ export default class App extends React.Component {
     const count = (st) => robots.filter((r) => r.status === st).length;
     const kpi = { total: robots.length, active: count('active'), idle: count('idle'), charging: count('charging'), fault: count('fault') };
     const total = robots.length || 1;
+    const hw = s.hw || 1200;
     const dist = { active: kpi.active / total * 100, idle: kpi.idle / total * 100, charging: kpi.charging / total * 100, fault: kpi.fault / total * 100 };
     const avgBatt = Math.round(robots.reduce((a, r) => a + r.battery, 0) / total);
     const unitsHr = robots.filter((r) => r.status === 'active').reduce((a, r) => a + Math.round(3600 / r.cycleTime), 0);
@@ -331,8 +379,7 @@ export default class App extends React.Component {
 
     const zoneStats = zones.map((z) => { const c = robots.filter((r) => r.zoneId === z.id).length; return { id: z.id, name: z.name, color: z.color, count: c, pct: Math.round(c / 6 * 100) }; });
 
-    const navIds = ['fleet', 'map', 'tasks', 'charge', 'alerts', 'analytics', 'maint', 'rollup', 'handover'];
-    const nav = Object.fromEntries(navIds.map((id) => [id, this.navStyle(id)]));
+    const nav = Object.fromEntries(NAV_IDS.map((id) => [id, this.navStyle(id)]));
     const unack = s.alerts.filter((a) => !a.acked).length;
 
     // fleet
@@ -343,7 +390,7 @@ export default class App extends React.Component {
       { label: 'Open faults', value: kpi.fault, delta: kpi.fault > 0 ? 'attention' : 'clear', deltaColor: kpi.fault > 0 ? 'var(--color-text-danger)' : 'var(--color-text-success)', helper: 'require action' },
     ];
     const fdef = [['all', 'All'], ['active', 'Active'], ['charging', 'Charging'], ['idle', 'Idle'], ['fault', 'Fault']];
-    const filterStyle = (id) => { const on = s.zoneFilter === id; return `padding:6px 12px;border-radius:9999px;border:1px solid ${on ? 'var(--color-action-primary)' : 'var(--color-border-default)'};background:${on ? 'var(--color-bg-brand-subtle)' : 'var(--color-bg-default)'};color:${on ? 'var(--color-text-brand)' : 'var(--color-text-subtle)'};font-size:12.5px;font-weight:${on ? 600 : 500};cursor:pointer;font-family:var(--font-sans)`; };
+    const filterStyle = (id) => { const on = s.zoneFilter === id; return `min-height:44px;padding:6px 14px;border-radius:9999px;border:1px solid ${on ? 'var(--color-action-primary)' : 'var(--color-border-default)'};background:${on ? 'var(--color-bg-brand-subtle)' : 'var(--color-bg-default)'};color:${on ? 'var(--color-text-brand)' : 'var(--color-text-subtle)'};font-size:12.5px;font-weight:${on ? 600 : 500};cursor:pointer;font-family:var(--font-sans)`; };
     const filters = fdef.map(([id, label]) => ({ id, label, style: filterStyle(id), count: id === 'all' ? robots.length : count(id), onClick: () => this.setState({ zoneFilter: id }) }));
 
     const fmtRobot = (r) => ({
@@ -420,8 +467,8 @@ export default class App extends React.Component {
         id: r.id, name: r.name, display: r.id === 'geo' ? 'Unit enters a mapped no-go zone' : `${r.metric} ${r.op} ${vl}`, valueLabel: vl, action: r.action, enabled: r.enabled, editable: r.id !== 'geo',
         sevLabel: cap(r.sev), sevTone: sevTone[r.sev], sevBg: sevBg[r.sev],
         rowStyle: `display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--color-border-default);${r.enabled ? '' : 'opacity:.5;'}`,
-        toggleStyle: `position:relative;width:38px;height:22px;border-radius:9999px;border:none;cursor:pointer;flex:none;background:${r.enabled ? 'var(--color-action-primary)' : 'var(--color-bg-muted)'};transition:background .12s`,
-        knobStyle: `position:absolute;top:2px;left:${r.enabled ? '18px' : '2px'};width:18px;height:18px;border-radius:9999px;background:#fff;transition:left .12s;box-shadow:0 1px 2px rgba(0,0,0,.2)`,
+        toggleStyle: `position:relative;box-sizing:content-box;width:38px;height:22px;padding:11px 3px;background-clip:content-box;border-radius:14px / 22px;border:none;cursor:pointer;flex:none;background-color:${r.enabled ? 'var(--color-action-primary)' : 'var(--color-bg-muted)'};transition:background-color .12s`,
+        knobStyle: `position:absolute;top:13px;left:${r.enabled ? '21px' : '5px'};width:18px;height:18px;border-radius:9999px;background:#fff;transition:left .12s;box-shadow:0 1px 2px rgba(0,0,0,.2)`,
         dec: () => this.bumpRule(r.id, -1), inc: () => this.bumpRule(r.id, 1), toggle: () => this.toggleRule(r.id),
       };
     });
@@ -638,7 +685,7 @@ export default class App extends React.Component {
     const curPlant = this.plants.find((p) => p.id === s.plant) || this.plants[0];
     const plantList = this.plants.map((p) => ({
       id: p.id, name: p.name, line: p.line, online: p.id === s.plant ? kpi.active + '/' + kpi.total : p.online, active: p.id === s.plant,
-      rowStyle: `display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border:none;background:${p.id === s.plant ? 'var(--color-bg-brand-subtle)' : 'transparent'};cursor:pointer;text-align:left;font-family:var(--font-sans);border-radius:8px;color:var(--color-text-default)`,
+      rowStyle: `display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:9px 12px;border:none;background:${p.id === s.plant ? 'var(--color-bg-brand-subtle)' : 'transparent'};cursor:pointer;text-align:left;font-family:var(--font-sans);border-radius:8px;color:var(--color-text-default)`,
       onSelect: () => this.switchPlant(p),
     }));
 
@@ -656,8 +703,19 @@ export default class App extends React.Component {
     return {
       rootClass: isDark ? 'lyra dark' : 'lyra',
       clock: s.clock,
-      themeGlyph: isDark ? '☀' : '☾',
-      toggleTheme: () => this.setState((st) => ({ theme: st.theme === 'dark' ? 'light' : 'dark' })),
+      isDark,
+      setLight: () => this.setState({ theme: 'light' }), setDark: () => this.setState({ theme: 'dark' }),
+      themeLightStyle: this.themeSeg(!isDark), themeDarkStyle: this.themeSeg(isDark),
+      // Sidebar
+      sbCollapsed: !!s.sbCollapsed, toggleSidebar: this.toggleSidebar,
+      gridCols: s.sbCollapsed ? '64px 1fr' : '236px 1fr',
+      navCur: Object.fromEntries(NAV_IDS.map((k) => [k, s.view === k ? 'page' : undefined])),
+      alertsAria: unack > 0 ? 'Alerts, ' + unack + ' unacknowledged' : 'Alerts',
+      // Top bar breakpoints, by the header's own width
+      headerRef: this.headerRef,
+      hdrFull: hw >= 1080, hdrShowLive: hw >= 820,
+      hdrGap: hw < 820 ? '10px' : (hw < 1080 ? '12px' : '16px'), hdrPad: hw < 820 ? '14px' : HEADER_PAD_FULL + 'px',
+      searchSize: hw >= 1080 ? 'flex:1;min-width:180px;max-width:320px;margin:0 4px 0 6px' : 'flex:none',
       go: this.go,
       view: s.view,
       nav, unackCount: unack, hasAlerts: unack > 0, zoneStats,
@@ -678,8 +736,8 @@ export default class App extends React.Component {
       rulesView, routing: routingView,
       anaKpis, throughput, utilization, uptimePts, uptimeArea, uptimeDays: days7, uptimeLast, mtbfByModel, chargeCycles,
       sel,
-      estopStyle: `display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;border:1px solid ${s.estopAll ? 'var(--red-500)' : 'var(--color-border-strong)'};background:${s.estopAll ? 'var(--red-500)' : 'transparent'};color:${s.estopAll ? '#fff' : 'var(--color-text-danger)'};font-size:12.5px;font-weight:600;cursor:pointer;font-family:var(--font-sans)`,
-      estopLabel: s.estopAll ? 'Release all' : 'Global E-STOP',
+      estopStyle: `display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 14px;white-space:nowrap;flex:none;border-radius:8px;border:1px solid ${s.estopAll ? 'var(--red-500)' : 'var(--color-border-strong)'};background:${s.estopAll ? 'var(--red-500)' : 'transparent'};color:${s.estopAll ? '#fff' : 'var(--color-text-danger)'};font-size:12.5px;font-weight:600;cursor:pointer;font-family:var(--font-sans)`,
+      estopLabel: s.estopAll ? 'Release all' : (hw < 820 ? 'E-STOP' : 'Global E-STOP'),
       estopPulse: s.estopAll ? 'animation:lyra-pulse 1s infinite' : '',
       toggleEstop: () => this.toggleEstopAll(),
       curPlantName: curPlant.name, plantList, plantMenu: s.plantMenu,
@@ -703,7 +761,7 @@ export default class App extends React.Component {
     const v = this.renderVals();
     const view = v.view;
     return (
-      <div className={v.rootClass} style={sx('min-height:100vh;display:grid;grid-template-columns:236px 1fr;background:var(--color-bg-subtle);color:var(--color-text-default);font-size:14px')}>
+      <div className={v.rootClass} style={sx(`min-height:100vh;display:grid;grid-template-columns:${v.gridCols};transition:grid-template-columns .18s ease;background:var(--color-bg-subtle);color:var(--color-text-default);font-size:14px`)}>
         <Sidebar v={v} />
         <div style={sx('display:flex;flex-direction:column;min-width:0')}>
           <Topbar v={v} />
