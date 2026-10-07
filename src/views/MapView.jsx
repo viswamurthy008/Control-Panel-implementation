@@ -63,9 +63,9 @@ export default function MapView({ v }) {
                     </div>
                   ))}
                   {v.mapRobots.map((r) => (
-                    <div key={r.uid} onClick={r.open} title={r.id} style={sx(`${pos(r)};transform:translate(-50%,-50%);width:16px;height:16px;cursor:pointer;transition:left 1.3s linear,top 1.3s linear`)}>
-                      <span style={sx(`position:absolute;inset:0;border-radius:9999px;background:${r.color};box-shadow:0 0 0 2px var(--color-bg-default);${r.pulse}`)} />
-                      {r.isFault && <span style={sx('position:absolute;inset:-3px;border-radius:9999px;border:2px solid var(--red-500);animation:lyra-ring 1.4s ease-out infinite')} />}
+                    <div key={r.uid} onClick={r.open} title={r.id} style={sx(`${pos(r)};transform:translate(-50%,-50%);width:44px;height:44px;cursor:pointer;transition:left 1.3s linear,top 1.3s linear`)}>
+                      <span style={sx(`position:absolute;inset:14px;border-radius:9999px;background:${r.color};box-shadow:0 0 0 2px var(--color-bg-default);${r.pulse}`)} />
+                      {r.isFault && <span style={sx('position:absolute;inset:11px;border-radius:9999px;border:2px solid var(--red-500);animation:lyra-ring 1.4s ease-out infinite')} />}
                     </div>
                   ))}
                 </>

@@ -24,7 +24,7 @@ export default function CommandPalette({ v }) {
         </div>
         <div style={sx('max-height:340px;overflow:auto;padding:6px')}>
           {v.palette.map((it) => (
-            <button key={it.kind + it.label} onClick={it.onSelect} className={hv(HOVER_MUTED)} style={sx('display:flex;align-items:center;gap:11px;width:100%;padding:10px 12px;border:none;background:transparent;border-radius:9px;cursor:pointer;text-align:left;font-family:var(--font-sans)')}>
+            <button key={it.kind + it.label} onClick={it.onSelect} className={hv(HOVER_MUTED)} style={sx('min-height:44px;min-width:44px;display:flex;align-items:center;gap:11px;width:100%;padding:10px 12px;border:none;background:transparent;border-radius:9px;cursor:pointer;text-align:left;font-family:var(--font-sans)')}>
               <span style={sx(KIND)}>{it.kind}</span>
               <span style={sx('flex:1;font-size:13.5px;color:var(--color-text-default)')}>{it.label}</span>
               <span style={sx('font-size:12px;color:var(--color-text-subtle);font-family:var(--font-mono)')}>{it.hint}</span>

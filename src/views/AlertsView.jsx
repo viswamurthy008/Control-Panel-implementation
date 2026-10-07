@@ -28,8 +28,8 @@ function Incidents({ v }) {
             </div>
             {a.open && (
               <div style={sx('display:flex;gap:8px;flex:none')}>
-                <button onClick={a.onAck} className={hv(HOVER_MUTED)} style={sx(BTN_OUTLINE + ';padding:5px 11px;border-radius:7px;font-size:12px')}>Ack</button>
-                <button onClick={a.onResolve} className={hv(HOVER_PRIMARY)} style={sx(BTN_PRIMARY + ';border:1px solid transparent;padding:5px 11px;border-radius:7px;font-size:12px;font-weight:500')}>Resolve</button>
+                <button onClick={a.onAck} className={hv(HOVER_MUTED)} style={sx('min-height:44px;min-width:44px;' + BTN_OUTLINE + ';padding:5px 11px;border-radius:7px;font-size:12px')}>Ack</button>
+                <button onClick={a.onResolve} className={hv(HOVER_PRIMARY)} style={sx('min-height:44px;min-width:44px;' + BTN_PRIMARY + ';border:1px solid transparent;padding:5px 11px;border-radius:7px;font-size:12px;font-weight:500')}>Resolve</button>
               </div>
             )}
             {a.acked && <span style={sx('font-size:11.5px;color:var(--color-text-subtle);font-family:var(--font-mono);flex:none')}>acknowledged</span>}
@@ -41,7 +41,7 @@ function Incidents({ v }) {
 }
 
 function Rules({ v }) {
-  const stepBtn = 'width:30px;height:30px;border:none;background:transparent;color:var(--color-text-subtle);cursor:pointer;line-height:1;font-family:var(--font-sans)';
+  const stepBtn = 'min-height:44px;min-width:44px;width:44px;height:44px;border:none;background:transparent;color:var(--color-text-subtle);cursor:pointer;line-height:1;font-family:var(--font-sans)';
   return (
     <div style={sx('display:grid;grid-template-columns:1.35fr 1fr;gap:16px;align-items:start')}>
       <div style={sx(CARD + ';overflow:hidden')}>

@@ -36,25 +36,37 @@ export function sx(css) {
   return style;
 }
 
-const hoverCache = new Map();
+const pseudoCache = new Map();
 let sheet = null;
 let n = 0;
 
-/**
- * Return a class name that applies `css` on :hover. Declarations are marked
- * !important so they win over the element's inline styles.
- */
-export function hv(css) {
-  const hit = hoverCache.get(css);
+function pseudoClass(pseudo, prefix, css) {
+  const key = pseudo + '|' + css;
+  const hit = pseudoCache.get(key);
   if (hit) return hit;
   if (!sheet) {
     const el = document.createElement('style');
     document.head.appendChild(el);
     sheet = el.sheet;
   }
-  const cls = 'hv' + (n++).toString(36);
+  const cls = prefix + (n++).toString(36);
   const body = splitDecls(css).filter((d) => d.trim()).map((d) => d.trim() + ' !important').join(';');
-  sheet.insertRule(`.${cls}:hover{${body}}`, sheet.cssRules.length);
-  hoverCache.set(css, cls);
+  sheet.insertRule(`.${cls}:${pseudo}{${body}}`, sheet.cssRules.length);
+  pseudoCache.set(key, cls);
   return cls;
 }
+
+/**
+ * Return a class name that applies `css` on :hover. Declarations are marked
+ * !important so they win over the element's inline styles.
+ */
+export const hv = (css) => pseudoClass('hover', 'hv', css);
+
+/**
+ * Return a class name that applies `css` on :focus-visible (keyboard focus),
+ * so mouse clicks don't leave a focus ring behind.
+ */
+export const fv = (css) => pseudoClass('focus-visible', 'fv', css);
+
+/** Join class names, skipping empty ones. */
+export const cx = (...names) => names.filter(Boolean).join(' ');

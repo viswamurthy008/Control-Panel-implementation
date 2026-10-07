@@ -1,7 +1,7 @@
 import React from 'react';
 import { sx, hv, BackButton, Timeline, CARD, LABEL, RISE, BTN_OUTLINE, BTN_PRIMARY, PANEL_HEAD, HOVER_MUTED, HOVER_SUBTLE, HOVER_PRIMARY } from '../ui.jsx';
 
-const ACTION = BTN_OUTLINE + ';padding:9px 15px;border-radius:8px;font-size:13px';
+const ACTION = 'min-height:44px;min-width:44px;' + BTN_OUTLINE + ';padding:9px 15px;border-radius:8px;font-size:13px';
 
 export default function IncidentView({ v }) {
   const inc = v.inc;
@@ -58,7 +58,7 @@ export default function IncidentView({ v }) {
             <div style={sx(CARD + ';overflow:hidden')}>
               <div style={sx(PANEL_HEAD + ';padding:13px 18px')}>Affected units</div>
               {inc.affected.map((r) => (
-                <div key={r.uid} onClick={r.open} className={hv(HOVER_SUBTLE)} style={sx('display:flex;align-items:center;gap:10px;padding:11px 18px;border-bottom:1px solid var(--color-border-default);cursor:pointer')}>
+                <div key={r.uid} onClick={r.open} className={hv(HOVER_SUBTLE)} style={sx('min-height:44px;display:flex;align-items:center;gap:10px;padding:11px 18px;border-bottom:1px solid var(--color-border-default);cursor:pointer')}>
                   <span style={sx('font-family:var(--font-mono);font-weight:600;font-size:12.5px')}>{r.id}</span>
                   <span style={sx('font-size:11.5px;color:var(--color-text-subtle);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis')}>{r.model}</span>
                   <span style={sx(r.badge)}>{r.status}</span>
@@ -74,7 +74,7 @@ export default function IncidentView({ v }) {
         <button onClick={inc.onAssign} className={hv(HOVER_MUTED)} style={sx(ACTION)}>Assign to tech</button>
         <span style={sx('flex:1')} />
         <button onClick={inc.onAck} className={hv(HOVER_MUTED)} style={sx(ACTION)}>Acknowledge</button>
-        <button onClick={inc.onResolve} className={hv(HOVER_PRIMARY)} style={sx(BTN_PRIMARY + ';padding:9px 15px;border-radius:8px;font-size:13px')}>Resolve incident</button>
+        <button onClick={inc.onResolve} className={hv(HOVER_PRIMARY)} style={sx('min-height:44px;min-width:44px;' + BTN_PRIMARY + ';padding:9px 15px;border-radius:8px;font-size:13px')}>Resolve incident</button>
       </div>
     </div>
   );

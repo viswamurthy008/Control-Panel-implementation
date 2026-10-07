@@ -32,7 +32,7 @@ function FleetTable({ v }) {
       </div>
       {v.fleetGroups.map((g) => (
         <div key={g.id}>
-          <div onClick={g.onToggle} className={hv(HOVER_MUTED)} style={sx('display:flex;align-items:center;gap:10px;padding:9px 18px;background:var(--color-bg-subtle);border-bottom:1px solid var(--color-border-default);cursor:pointer;font-size:12.5px')}>
+          <div onClick={g.onToggle} className={hv(HOVER_MUTED)} style={sx('min-height:44px;display:flex;align-items:center;gap:10px;padding:9px 18px;background:var(--color-bg-subtle);border-bottom:1px solid var(--color-border-default);cursor:pointer;font-size:12.5px')}>
             <span style={sx('width:12px;color:var(--color-text-subtle);font-size:11px')}>{g.chevron}</span>
             <span style={sx(`width:8px;height:8px;border-radius:2px;background:${g.color}`)} />
             <span style={sx('font-weight:600')}>{g.name}</span>
@@ -45,7 +45,7 @@ function FleetTable({ v }) {
             </span>
           </div>
           {g.expanded && g.rows.map((r) => (
-            <div key={r.uid} onClick={r.open} className={hv(HOVER_SUBTLE)} style={sx(`${COLS};align-items:center;padding:9px 18px;border-bottom:1px solid var(--color-border-default);cursor:pointer;font-size:13px`)}>
+            <div key={r.uid} onClick={r.open} className={hv(HOVER_SUBTLE)} style={sx(`min-height:44px;${COLS};align-items:center;padding:9px 18px;border-bottom:1px solid var(--color-border-default);cursor:pointer;font-size:13px`)}>
               <span style={sx('display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-weight:600;font-size:12.5px')}>
                 <span style={sx(`width:8px;height:8px;border-radius:9999px;background:${r.color};${r.pulse};flex:none`)} />{r.id}
               </span>
@@ -79,7 +79,7 @@ function FleetCards({ v }) {
   return (
     <div style={sx('display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px')}>
       {v.fleetRobots.map((r) => (
-        <div key={r.uid} onClick={r.open} className={hv('border-color:var(--color-border-strong);box-shadow:0 2px 10px rgba(0,0,0,.06)')} style={sx(CARD + ';padding:15px 16px;cursor:pointer;transition:border-color .12s,box-shadow .12s')}>
+        <div key={r.uid} onClick={r.open} className={hv('border-color:var(--color-border-strong);box-shadow:0 2px 10px rgba(0,0,0,.06)')} style={sx('min-height:44px;' + CARD + ';padding:15px 16px;cursor:pointer;transition:border-color .12s,box-shadow .12s')}>
           <div style={sx('display:flex;align-items:center;gap:10px;margin-bottom:12px')}>
             <span style={sx('position:relative;width:10px;height:10px;flex:none')}>
               <span style={sx(`position:absolute;inset:0;border-radius:9999px;background:${r.color};${r.pulse}`)} />

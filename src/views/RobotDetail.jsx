@@ -2,8 +2,8 @@ import React from 'react';
 import { sx, hv, Icon, BackButton, CARD, RISE, BTN_OUTLINE, HOVER_MUTED } from '../ui.jsx';
 
 const SMALL_LABEL = 'font-size:11px;color:var(--color-text-placeholder);text-transform:uppercase;letter-spacing:.05em;font-weight:600';
-const CMD = BTN_OUTLINE + ';padding:9px;border-radius:8px;font-size:13px';
-const PAD = 'display:flex;align-items:center;justify-content:center;padding:12px;border-radius:9px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);cursor:pointer';
+const CMD = 'min-height:44px;min-width:44px;' + BTN_OUTLINE + ';padding:9px;border-radius:8px;font-size:13px';
+const PAD = 'min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;padding:12px;border-radius:9px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);cursor:pointer';
 
 function Teleop({ sel }) {
   const pad = (dir, icon, label) => (
@@ -23,7 +23,7 @@ function Teleop({ sel }) {
         {pad('forward', 'chevUp', 'Forward')}
         <span />
         {pad('rotate left', 'chevLeft', 'Rotate left')}
-        <button onClick={() => sel.drive('stop')} className={hv('background:color-mix(in srgb,var(--red-500) 20%,transparent)')} style={sx('display:flex;align-items:center;justify-content:center;padding:12px;border-radius:9px;border:1px solid var(--red-500);background:color-mix(in srgb,var(--red-500) 12%,transparent);color:var(--color-text-danger);cursor:pointer;font-family:var(--font-sans);font-weight:600;font-size:12px')}>Stop</button>
+        <button onClick={() => sel.drive('stop')} className={hv('background:color-mix(in srgb,var(--red-500) 20%,transparent)')} style={sx('min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;padding:12px;border-radius:9px;border:1px solid var(--red-500);background:color-mix(in srgb,var(--red-500) 12%,transparent);color:var(--color-text-danger);cursor:pointer;font-family:var(--font-sans);font-weight:600;font-size:12px')}>Stop</button>
         {pad('rotate right', 'chevRight', 'Rotate right')}
         <span />
         {pad('reverse', 'chevDown', 'Reverse')}
@@ -97,7 +97,7 @@ export default function RobotDetail({ v }) {
               <button onClick={sel.cmdReassign} className={hv(HOVER_MUTED)} style={sx(CMD)}>Reassign task</button>
               <button onClick={sel.cmdCharge} className={hv(HOVER_MUTED)} style={sx(CMD)}>Send to charge</button>
               <button onClick={sel.cmdRecall} className={hv(HOVER_MUTED)} style={sx(CMD)}>Recall to bay</button>
-              <button onClick={sel.cmdEstop} className={hv('filter:brightness(1.05)')} style={sx('grid-column:1/-1;padding:11px;border-radius:8px;border:1px solid var(--red-500);background:var(--red-500);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-sans);display:flex;align-items:center;justify-content:center;gap:8px')}>
+              <button onClick={sel.cmdEstop} className={hv('filter:brightness(1.05)')} style={sx('min-height:44px;min-width:44px;grid-column:1/-1;padding:11px;border-radius:8px;border:1px solid var(--red-500);background:var(--red-500);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-sans);display:flex;align-items:center;justify-content:center;gap:8px')}>
                 <span style={sx('width:9px;height:9px;border-radius:9999px;background:#fff')} />Emergency stop
               </button>
             </div>

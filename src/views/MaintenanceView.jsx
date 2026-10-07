@@ -16,7 +16,7 @@ export default function MaintenanceView({ v }) {
           <div style={sx(PANEL_HEAD)}>Service schedule</div>
           <div style={sx(`${SCHED_COLS};padding:9px 18px;${ROW_BORDER};${TH};white-space:nowrap`)}><span>Robot</span><span>Health</span><span>PM cycle</span><span>MTBF</span><span style={sx('text-align:right')}>Service</span></div>
           {v.maintRows.map((r) => (
-            <div key={r.uid} onClick={r.open} className={hv(HOVER_SUBTLE)} style={sx(`${SCHED_COLS};align-items:center;padding:10px 18px;${ROW_BORDER};cursor:pointer;font-size:13px`)}>
+            <div key={r.uid} onClick={r.open} className={hv(HOVER_SUBTLE)} style={sx(`min-height:44px;${SCHED_COLS};align-items:center;padding:10px 18px;${ROW_BORDER};cursor:pointer;font-size:13px`)}>
               <span style={sx('font-family:var(--font-mono);font-weight:600;font-size:12.5px')}>{r.id}</span>
               <span style={sx('display:flex;align-items:center;gap:8px')}><span style={sx(`width:8px;height:8px;border-radius:9999px;background:${r.healthColor};flex:none`)} /><span style={sx('white-space:nowrap')}>{r.health}</span></span>
               <span style={sx('display:flex;align-items:center;gap:9px')}>
@@ -63,7 +63,7 @@ export default function MaintenanceView({ v }) {
             <span style={sx('font-family:var(--font-mono);font-size:12px;color:var(--color-text-subtle)')}>{v.outOfService.length} units</span>
           </div>
           {v.outOfService.length > 0 ? v.outOfService.map((o) => (
-            <div key={o.uid} onClick={o.open} className={hv(HOVER_SUBTLE)} style={sx(`display:flex;align-items:center;gap:12px;padding:12px 18px;${ROW_BORDER};cursor:pointer`)}>
+            <div key={o.uid} onClick={o.open} className={hv(HOVER_SUBTLE)} style={sx(`min-height:44px;display:flex;align-items:center;gap:12px;padding:12px 18px;${ROW_BORDER};cursor:pointer`)}>
               <span style={sx('font-family:var(--font-mono);font-weight:600;font-size:13px')}>{o.id}</span>
               <span style={sx('flex:1;min-width:0;font-size:12px;color:var(--color-text-subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis')}>{o.model} · {o.zone}</span>
               <span style={sx(`display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:${o.reasonColor};flex:none`)}><span style={sx(`width:7px;height:7px;border-radius:9999px;background:${o.reasonColor}`)} />{o.reason}</span>

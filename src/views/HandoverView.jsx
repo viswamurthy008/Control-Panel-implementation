@@ -26,7 +26,7 @@ export default function HandoverView({ v }) {
           <div style={sx(CARD + ';overflow:hidden')}>
             <div style={sx(PANEL_HEAD)}>Watch list</div>
             {v.hoWatch.map((r) => (
-              <div key={r.uid} onClick={r.open} className={hv(HOVER_SUBTLE)} style={sx('display:flex;align-items:center;gap:11px;padding:11px 18px;border-bottom:1px solid var(--color-border-default);cursor:pointer')}>
+              <div key={r.uid} onClick={r.open} className={hv(HOVER_SUBTLE)} style={sx('min-height:44px;display:flex;align-items:center;gap:11px;padding:11px 18px;border-bottom:1px solid var(--color-border-default);cursor:pointer')}>
                 <span style={sx(`width:8px;height:8px;border-radius:9999px;background:${r.healthColor};flex:none`)} />
                 <span style={sx('font-family:var(--font-mono);font-weight:600;font-size:12.5px')}>{r.id}</span>
                 <span style={sx('font-size:12px;color:var(--color-text-subtle);flex:1')}>{r.health}</span>
@@ -57,7 +57,7 @@ export default function HandoverView({ v }) {
                 </label>
               ))}
             </div>
-            <button onClick={v.signHandover} className={hv(HOVER_PRIMARY)} style={sx(BTN_PRIMARY + ';width:100%;padding:11px;border-radius:9px;font-size:13.5px')}>Complete handover</button>
+            <button onClick={v.signHandover} className={hv(HOVER_PRIMARY)} style={sx('min-height:44px;min-width:44px;' + BTN_PRIMARY + ';width:100%;padding:11px;border-radius:9px;font-size:13.5px')}>Complete handover</button>
             <div style={sx('display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:var(--color-text-subtle)')}>
               <div style={sx('width:26px;height:26px;border-radius:9999px;background:var(--color-bg-brand-subtle);color:var(--color-text-brand);display:grid;place-items:center;font-weight:600;font-size:11px;flex:none')}>RM</div>
               <span>Outgoing: R. Marín · Incoming: T. Osei</span>

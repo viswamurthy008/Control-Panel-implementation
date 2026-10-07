@@ -41,13 +41,23 @@ describe('navigation', () => {
     expect(screen.getByRole('button', { name: /Meridian — Building 4/ })).toBeInTheDocument();
   });
 
-  it('toggles between dark and light themes', async () => {
+  it('switches theme with the top-bar light/dark control', async () => {
     const { user, container } = renderApp();
     const root = container.firstChild;
+    const light = screen.getByTitle('Light theme');
+    const dark = screen.getByTitle('Dark theme');
     expect(root).toHaveClass('dark');
-    await user.click(screen.getByTitle('Toggle theme'));
+    expect(dark).toHaveAttribute('aria-pressed', 'true');
+    expect(light).toHaveAttribute('aria-pressed', 'false');
+
+    await user.click(light);
     expect(root).not.toHaveClass('dark');
-    await user.click(screen.getByTitle('Toggle theme'));
+    expect(light).toHaveAttribute('aria-pressed', 'true');
+    expect(dark).toHaveAttribute('aria-pressed', 'false');
+
+    await user.click(light); // already light: stays light
+    expect(root).not.toHaveClass('dark');
+    await user.click(dark);
     expect(root).toHaveClass('dark');
   });
 
