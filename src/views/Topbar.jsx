@@ -1,0 +1,57 @@
+import React from 'react';
+import { sx, hv, Icon, HOVER_MUTED } from '../ui.jsx';
+
+export default function Topbar({ v }) {
+  return (
+    <header style={sx('position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:16px;padding:0 22px;height:58px;background:color-mix(in srgb, var(--color-bg-default) 82%, transparent);backdrop-filter:blur(8px)')}>
+      <div style={sx('position:relative;flex:none;width:230px')}>
+        <button onClick={v.togglePlantMenu} className={hv(HOVER_MUTED)} style={sx('display:flex;align-items:center;gap:9px;padding:5px 9px 5px 6px;border-radius:9px;border:1px solid transparent;background:transparent;cursor:pointer;font-family:var(--font-sans);color:var(--color-text-default);width:100%')}>
+          <span style={sx('width:26px;height:26px;border-radius:7px;background:var(--color-action-primary);display:grid;place-items:center;flex:none')}>
+            <Icon name="building" size={15} stroke="#fff" />
+          </span>
+          <span style={sx('display:flex;flex-direction:column;align-items:flex-start;line-height:1.15;min-width:0')}>
+            <span style={sx('font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px')}>{v.curPlantName}</span>
+            <span style={sx('font-size:11px;color:var(--color-text-subtle);white-space:nowrap')}>Shift B · Days</span>
+          </span>
+          <Icon name="chevDown" size={15} stroke="var(--color-text-subtle)" style={sx('flex:none')} />
+        </button>
+        {v.plantMenu && (
+          <div style={sx('position:absolute;top:46px;left:0;width:308px;background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.22);padding:6px;z-index:30')}>
+            <div style={sx('padding:8px 10px 6px;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600')}>Switch site</div>
+            {v.plantList.map((p) => (
+              <button key={p.id} onClick={p.onSelect} className={hv(HOVER_MUTED)} style={sx(p.rowStyle)}>
+                <span style={sx('flex:1;min-width:0')}>
+                  <span style={sx('display:block;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis')}>{p.name}</span>
+                  <span style={sx('display:block;font-size:11.5px;color:var(--color-text-subtle)')}>{p.line}</span>
+                </span>
+                <span style={sx('font-family:var(--font-mono);font-size:11.5px;color:var(--color-text-subtle);flex:none')}>{p.online}</span>
+                {p.active && <span style={sx('width:7px;height:7px;border-radius:9999px;background:var(--color-action-primary);flex:none')} />}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div style={sx('display:flex;align-items:center;gap:7px;padding:4px 10px;border-radius:9999px;background:var(--color-bg-muted);font-size:12px;color:var(--color-text-subtle);flex:none;white-space:nowrap')}>
+        <span style={sx('width:7px;height:7px;border-radius:9999px;background:var(--green-500);animation:lyra-pulse 1.8s ease-in-out infinite')} />
+        <span>Live</span>
+        <span style={sx('font-family:var(--font-mono);color:var(--color-text-default)')}>{v.clock}</span>
+      </div>
+
+      <button onClick={v.openPalette} title="Search (⌘K)" className={hv('border-color:var(--color-border-strong)')} style={sx('display:flex;align-items:center;gap:9px;padding:6px 10px;border-radius:8px;border:1px solid var(--color-border-default);background:var(--color-bg-subtle);color:var(--color-text-placeholder);cursor:pointer;font-family:var(--font-sans);font-size:12.5px;flex:1;min-width:0;max-width:320px;margin:0 4px 0 6px')}>
+        <Icon name="search" size={15} />
+        <span style={sx('flex:1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis')}>Search or jump to…</span>
+        <span style={sx('font-family:var(--font-mono);font-size:11px;padding:1px 6px;border-radius:5px;background:var(--color-bg-muted);color:var(--color-text-subtle);flex:none')}>⌘K</span>
+      </button>
+
+      <div style={sx('display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-subtle);flex:none;white-space:nowrap')}>
+        <span style={sx('font-family:var(--font-mono);font-size:13px;color:var(--color-text-default)')}>{v.kpi.active}</span>/{v.kpi.total} online
+      </div>
+
+      <button onClick={v.toggleEstop} className={hv('filter:brightness(1.06)')} style={sx(v.estopStyle)}>
+        <span style={sx(`width:9px;height:9px;border-radius:9999px;background:currentColor;${v.estopPulse}`)} />
+        {v.estopLabel}
+      </button>
+    </header>
+  );
+}
