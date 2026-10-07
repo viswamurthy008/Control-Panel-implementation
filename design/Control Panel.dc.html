@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue-50:#eff6ff;--blue-400:#60a5fa;--blue-500:#3b82f6;--blue-600:#2563eb;--blue-700:#1d4ed8;--blue-800:#1e40af;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-500:#6b7280;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;--gray-900:#111827;
+  --green-500:#22c55e;--green-700:#15803d;--yellow-500:#eab308;--yellow-700:#a16207;--red-500:#ef4444;--red-700:#b91c1c;
+  --color-bg-default:#ffffff;--color-bg-subtle:var(--gray-50);--color-bg-muted:var(--gray-100);--color-bg-brand-subtle:var(--blue-50);
+  --color-text-default:var(--gray-900);--color-text-subtle:var(--gray-600);--color-text-placeholder:var(--gray-500);--color-text-brand:var(--blue-600);--color-text-inverse:#fff;
+  --color-text-success:var(--green-700);--color-text-warning:var(--yellow-700);--color-text-danger:var(--red-700);
+  --color-border-default:var(--gray-200);--color-border-strong:var(--gray-400);
+  --color-action-primary:var(--blue-600);--color-action-primary-hover:var(--blue-700);
+  --font-sans:'Inter',system-ui,sans-serif;--font-mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+.dark{
+  --color-bg-default:#0f141c;--color-bg-subtle:var(--gray-900);--color-bg-muted:var(--gray-800);--color-bg-brand-subtle:#16243f;
+  --color-text-default:var(--gray-50);--color-text-subtle:var(--gray-400);--color-text-placeholder:var(--gray-500);--color-text-brand:var(--blue-400);--color-text-inverse:var(--gray-900);
+  --color-text-success:var(--green-500);--color-text-warning:var(--yellow-500);--color-text-danger:#f87171;
+  --color-border-default:var(--gray-700);--color-border-strong:var(--gray-600);
+  --color-action-primary:var(--blue-600);--color-action-primary-hover:var(--blue-500);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font-sans)}
+a{color:var(--color-text-brand);text-decoration:none}
+a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--color-border-strong);border-radius:9999px;border:3px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-track{background:transparent}
+@keyframes lyra-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes lyra-blink{0%,100%{opacity:1}50%{opacity:.15}}
+@keyframes lyra-ring{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.6);opacity:0}}
+@keyframes lyra-sweep{0%{transform:translateX(-100%)}100%{transform:translateX(400%)}}
+@keyframes lyra-rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div class="{{ rootClass }}" style="min-height:100vh;display:grid;grid-template-columns:236px 1fr;background:var(--color-bg-subtle);color:var(--color-text-default);font-size:14px">
+
+  <!-- ░░ SIDEBAR ░░ -->
+  <aside style="grid-row:1;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;background:var(--color-bg-default);border-right:1px solid var(--color-border-default);z-index:5">
+    <div style="display:flex;align-items:center;gap:10px;height:58px;padding:0 18px;box-sizing:border-box;flex:none">
+      <div style="width:30px;height:30px;border-radius:8px;background:var(--color-action-primary);display:grid;place-items:center;flex:none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M12 9V5"/><circle cx="12" cy="4" r="1.4"/><path d="M9 14h.01M15 14h.01"/><path d="M9 20v-3M15 20v-3"/></svg>
+      </div>
+      <div style="line-height:1.1">
+        <div style="font-weight:700;letter-spacing:-.01em">Orchestrator</div>
+        <div style="font-size:11px;color:var(--color-text-subtle);font-family:var(--font-mono)">v1.0 · floor ops</div>
+      </div>
+    </div>
+
+    <div style="padding:14px 18px 6px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">Operations</div>
+    <nav style="display:flex;flex-direction:column;gap:2px;padding:0 10px">
+      <button onClick="{{ goFleet }}" style="{{ nav.fleet }}" style-hover="background:var(--color-bg-muted)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        <span style="white-space:nowrap">Fleet overview</span>
+      </button>
+      <button onClick="{{ goMap }}" style="{{ nav.map }}" style-hover="background:var(--color-bg-muted)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 4-6 2v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/></svg>
+        <span style="white-space:nowrap">Floor map</span>
+      </button>
+      <button onClick="{{ goTasks }}" style="{{ nav.tasks }}" style-hover="background:var(--color-bg-muted)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8 2 2 3-3"/><path d="m3 16 2 2 3-3"/><path d="M12 7h9M12 17h9"/></svg>
+        <span style="white-space:nowrap">Job queue</span>
+      </button>
+      <button onClick="{{ goCharge }}" style="{{ nav.charge }}" style-hover="background:var(--color-bg-muted)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h3"/><path d="M17 7h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1"/><path d="M22 11v2"/><path d="m11 6-3 6h4l-3 6"/></svg>
+        <span style="white-space:nowrap">Charging</span>
+      </button>
+      <button onClick="{{ goAlerts }}" style="{{ nav.alerts }}" style-hover="background:var(--color-bg-muted)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 4.3 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <span style="flex:1;text-align:left">Alerts</span>
+        <sc-if value="{{ hasAlerts }}" hint-placeholder-val="{{ true }}"><span style="min-width:19px;height:19px;padding:0 5px;border-radius:9999px;background:var(--red-500);color:#fff;font-size:11px;font-weight:600;font-family:var(--font-mono);display:grid;place-items:center">{{ unackCount }}</span></sc-if>
+      </button>
+      <button onClick="{{ goAnalytics }}" style="{{ nav.analytics }}" style-hover="background:var(--color-bg-muted)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6" rx="1"/><rect x="12.5" y="7" width="3" height="10" rx="1"/><rect x="18" y="13" width="3" height="4" rx="1"/></svg>
+        <span style="white-space:nowrap">Analytics</span>
+      </button>
+      <button onClick="{{ goMaint }}" style="{{ nav.maint }}" style-hover="background:var(--color-bg-muted)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.2-.6-.6-2.2 2.3-2.3Z"/></svg>
+        <span style="white-space:nowrap">Maintenance</span>
+      </button>
+      <button onClick="{{ goRollup }}" style="{{ nav.rollup }}" style-hover="background:var(--color-bg-muted)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="7" height="18" rx="1"/><rect x="13" y="8" width="7" height="13" rx="1"/><path d="M7 7h1M7 11h1M16 12h1"/></svg>
+        <span style="white-space:nowrap">Plant rollup</span>
+      </button>
+      <button onClick="{{ goHandover }}" style="{{ nav.handover }}" style-hover="background:var(--color-bg-muted)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M9 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3"/><path d="m9 14 2 2 4-4"/></svg>
+        <span style="white-space:nowrap">Shift handover</span>
+      </button>
+    </nav>
+
+    <div style="padding:16px 18px 6px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">Zones</div>
+    <div style="padding:0 18px;display:flex;flex-direction:column;gap:9px;overflow:auto;flex:1">
+      <sc-for list="{{ zoneStats }}" as="z" hint-placeholder-count="6">
+        <div style="display:flex;align-items:center;gap:9px;font-size:12.5px">
+          <span style="width:8px;height:8px;border-radius:2px;flex:none;background:{{ z.color }}"></span>
+          <span style="flex:1;color:var(--color-text-subtle)">{{ z.name }}</span>
+          <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--color-text-default)">{{ z.count }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="padding:12px 18px;border-top:1px solid var(--color-border-default);display:flex;align-items:center;gap:10px">
+      <div style="width:30px;height:30px;border-radius:9999px;background:var(--color-bg-brand-subtle);color:var(--color-text-brand);display:grid;place-items:center;font-weight:600;font-size:12px;flex:none">RM</div>
+      <div style="line-height:1.15;flex:1;min-width:0">
+        <div style="font-size:12.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">R. Marín</div>
+        <div style="font-size:11px;color:var(--color-text-subtle)">Line supervisor</div>
+      </div>
+      <button onClick="{{ toggleTheme }}" title="Toggle theme" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-subtle);cursor:pointer;display:grid;place-items:center" style-hover="background:var(--color-bg-muted)">
+          <span style="font-size:14px">{{ themeGlyph }}</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ░░ MAIN ░░ -->
+  <div style="display:flex;flex-direction:column;min-width:0">
+
+    <!-- TOPBAR -->
+    <header style="position:sticky;top:0;z-index:4;display:flex;align-items:center;gap:16px;padding:0 22px;height:58px;background:color-mix(in srgb, var(--color-bg-default) 82%, transparent);backdrop-filter:blur(8px)">
+      <div style="position:relative;flex:none;width:230px">
+        <button onClick="{{ togglePlantMenu }}" style="display:flex;align-items:center;gap:9px;padding:5px 9px 5px 6px;border-radius:9px;border:1px solid transparent;background:transparent;cursor:pointer;font-family:var(--font-sans);color:var(--color-text-default);width:100%" style-hover="background:var(--color-bg-muted)">
+          <span style="width:26px;height:26px;border-radius:7px;background:var(--color-action-primary);display:grid;place-items:center;flex:none"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l6-4 6 4v13M9 12h.01M13 12h.01M9 16h.01M13 16h.01"/></svg></span>
+          <span style="display:flex;flex-direction:column;align-items:flex-start;line-height:1.15;min-width:0">
+            <span style="font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px">{{ curPlantName }}</span>
+            <span style="font-size:11px;color:var(--color-text-subtle);white-space:nowrap">Shift B · Days</span>
+          </span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-subtle)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <sc-if value="{{ plantMenu }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;top:46px;left:0;width:308px;background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.22);padding:6px;z-index:30">
+            <div style="padding:8px 10px 6px;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">Switch site</div>
+            <sc-for list="{{ plantList }}" as="p" hint-placeholder-count="4">
+              <button onClick="{{ p.onSelect }}" style="{{ p.rowStyle }}" style-hover="background:var(--color-bg-muted)">
+                <span style="flex:1;min-width:0">
+                  <span style="display:block;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</span>
+                  <span style="display:block;font-size:11.5px;color:var(--color-text-subtle)">{{ p.line }}</span>
+                </span>
+                <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--color-text-subtle);flex:none">{{ p.online }}</span>
+                <sc-if value="{{ p.active }}" hint-placeholder-val="{{ false }}"><span style="width:7px;height:7px;border-radius:9999px;background:var(--color-action-primary);flex:none"></span></sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;padding:4px 10px;border-radius:9999px;background:var(--color-bg-muted);font-size:12px;color:var(--color-text-subtle);flex:none;white-space:nowrap">
+        <span style="width:7px;height:7px;border-radius:9999px;background:var(--green-500);animation:lyra-pulse 1.8s ease-in-out infinite"></span>
+        <span>Live</span>
+        <span style="font-family:var(--font-mono);color:var(--color-text-default)">{{ clock }}</span>
+      </div>
+      <button onClick="{{ openPalette }}" title="Search (⌘K)" style="display:flex;align-items:center;gap:9px;padding:6px 10px;border-radius:8px;border:1px solid var(--color-border-default);background:var(--color-bg-subtle);color:var(--color-text-placeholder);cursor:pointer;font-family:var(--font-sans);font-size:12.5px;flex:1;min-width:0;max-width:320px;margin:0 4px 0 6px" style-hover="border-color:var(--color-border-strong)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <span style="flex:1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Search or jump to…</span>
+        <span style="font-family:var(--font-mono);font-size:11px;padding:1px 6px;border-radius:5px;background:var(--color-bg-muted);color:var(--color-text-subtle);flex:none">⌘K</span>
+      </button>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-subtle);flex:none;white-space:nowrap">
+        <span style="font-family:var(--font-mono);font-size:13px;color:var(--color-text-default)">{{ kpi.active }}</span>/{{ kpi.total }} online
+      </div>
+      <button onClick="{{ toggleEstop }}" style="{{ estopStyle }}" style-hover="filter:brightness(1.06)">
+        <span style="width:9px;height:9px;border-radius:9999px;background:currentColor;{{ estopPulse }}"></span>
+        {{ estopLabel }}
+      </button>
+      <div style="width:1px;height:26px;background:var(--color-border-default);flex:none"></div>
+      <button title="Account" style="display:flex;align-items:center;gap:9px;padding:4px 8px 4px 4px;border-radius:9999px;border:1px solid transparent;background:transparent;cursor:pointer;font-family:var(--font-sans);color:var(--color-text-default);flex:none" style-hover="background:var(--color-bg-muted)">
+        <span style="width:30px;height:30px;border-radius:9999px;background:var(--color-bg-brand-subtle);color:var(--color-text-brand);display:grid;place-items:center;font-weight:600;font-size:12px;flex:none">RM</span>
+        <span style="display:flex;flex-direction:column;align-items:flex-start;line-height:1.15">
+          <span style="font-size:12.5px;font-weight:500;white-space:nowrap">R. Marín</span>
+          <span style="font-size:11px;color:var(--color-text-subtle);white-space:nowrap">Line supervisor</span>
+        </span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-subtle)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    </header>
+
+    <main style="flex:1;overflow:auto;padding:22px">
+
+    <!-- ══ FLEET OVERVIEW ══ -->
+    <sc-if value="{{ isFleet }}" hint-placeholder-val="{{ true }}">
+    <div style="animation:lyra-rise .25s ease">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px">
+        <div>
+          <h1 style="margin:0 0 3px;font-size:22px;font-weight:600;letter-spacing:-.01em">Fleet overview</h1>
+          <p style="margin:0;font-size:13px;color:var(--color-text-subtle)">{{ kpi.total }} humanoid units across 6 zones · real-time telemetry</p>
+        </div>
+        <div style="display:flex;gap:3px;padding:3px;border-radius:9px;background:var(--color-bg-muted);flex:none">
+          <button onClick="{{ goCards }}" style="{{ segCards }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Cards</button>
+          <button onClick="{{ goTable }}" style="{{ segTable }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>Table</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px">
+        <sc-for list="{{ fleetKpis }}" as="k" hint-placeholder-count="4">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px 18px">
+            <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">{{ k.label }}</div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:8px">
+              <span style="font-size:28px;font-weight:600;font-family:var(--font-mono);letter-spacing:-.02em">{{ k.value }}</span>
+              <span style="font-size:12px;font-weight:600;color:{{ k.deltaColor }}">{{ k.delta }}</span>
+            </div>
+            <div style="font-size:11.5px;color:var(--color-text-subtle);margin-top:2px">{{ k.helper }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+        <div style="font-size:12px;font-weight:600;color:var(--color-text-subtle)">Fleet status</div>
+        <div style="flex:1;min-width:220px;height:10px;border-radius:9999px;overflow:hidden;display:flex;background:var(--color-bg-muted)">
+          <div style="width:{{ dist.active }}%;background:var(--green-500)"></div>
+          <div style="width:{{ dist.charging }}%;background:var(--blue-500)"></div>
+          <div style="width:{{ dist.idle }}%;background:var(--gray-400)"></div>
+          <div style="width:{{ dist.fault }}%;background:var(--red-500)"></div>
+        </div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px">
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:9999px;background:var(--green-500)"></span>Active <b style="font-family:var(--font-mono)">{{ kpi.active }}</b></span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:9999px;background:var(--blue-500)"></span>Charging <b style="font-family:var(--font-mono)">{{ kpi.charging }}</b></span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:9999px;background:var(--gray-400)"></span>Idle <b style="font-family:var(--font-mono)">{{ kpi.idle }}</b></span>
+          <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:9999px;background:var(--red-500)"></span>Fault <b style="font-family:var(--font-mono)">{{ kpi.fault }}</b></span>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="7">
+          <button onClick="{{ f.onClick }}" style="{{ f.style }}" style-hover="border-color:var(--color-border-strong)">{{ f.label }}<span style="font-family:var(--font-mono);opacity:.7;margin-left:6px">{{ f.count }}</span></button>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ isTable }}" hint-placeholder-val="{{ false }}">
+      <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:132px 116px 96px 150px 1fr 108px;gap:14px;padding:10px 18px;border-bottom:1px solid var(--color-border-default);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600;white-space:nowrap">
+          <span>Robot</span><span>Model</span><span>Status</span><span>Battery</span><span>Current task</span><span style="text-align:right">Progress</span>
+        </div>
+        <sc-for list="{{ fleetGroups }}" as="g" hint-placeholder-count="4">
+          <div>
+            <div onClick="{{ g.onToggle }}" style="display:flex;align-items:center;gap:10px;padding:9px 18px;background:var(--color-bg-subtle);border-bottom:1px solid var(--color-border-default);cursor:pointer;font-size:12.5px" style-hover="background:var(--color-bg-muted)">
+              <span style="width:12px;color:var(--color-text-subtle);font-size:11px">{{ g.chevron }}</span>
+              <span style="width:8px;height:8px;border-radius:2px;background:{{ g.color }}"></span>
+              <span style="font-weight:600">{{ g.name }}</span>
+              <span style="font-family:var(--font-mono);color:var(--color-text-subtle)">{{ g.count }}</span>
+              <span style="flex:1"></span>
+              <span style="display:flex;gap:12px;font-family:var(--font-mono);font-size:11.5px">
+                <span style="color:var(--color-text-success)">{{ g.active }} active</span>
+                <span style="color:var(--color-text-subtle)">{{ g.idle }} idle</span>
+                <span style="color:var(--color-text-danger)">{{ g.fault }} fault</span>
+              </span>
+            </div>
+            <sc-if value="{{ g.expanded }}" hint-placeholder-val="{{ true }}">
+              <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="4">
+                <div onClick="{{ r.open }}" style="display:grid;grid-template-columns:132px 116px 96px 150px 1fr 108px;gap:14px;align-items:center;padding:9px 18px;border-bottom:1px solid var(--color-border-default);cursor:pointer;font-size:13px" style-hover="background:var(--color-bg-subtle)">
+                  <span style="display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-weight:600;font-size:12.5px"><span style="width:8px;height:8px;border-radius:9999px;background:{{ r.color }};{{ r.pulse }};flex:none"></span>{{ r.id }}</span>
+                  <span style="color:var(--color-text-subtle);font-size:12px">{{ r.model }}</span>
+                  <span><span style="{{ r.badge }}">{{ r.statusLabel }}</span></span>
+                  <span style="display:flex;align-items:center;gap:7px"><div style="flex:1;height:5px;border-radius:9999px;background:var(--color-bg-muted);overflow:hidden"><div style="height:100%;width:{{ r.battery }}%;background:{{ r.battColor }};border-radius:9999px;transition:width .5s"></div></div><span style="font-family:var(--font-mono);font-size:11.5px;width:32px;text-align:right">{{ r.battLabel }}</span></span>
+                  <span style="color:var(--color-text-subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.task }}</span>
+                  <span style="display:flex;align-items:center;gap:7px;justify-content:flex-end"><div style="width:60px;height:5px;border-radius:9999px;background:var(--color-bg-muted);overflow:hidden"><div style="height:100%;width:{{ r.progress }}%;background:var(--color-action-primary);border-radius:9999px;transition:width .5s"></div></div><span style="font-family:var(--font-mono);font-size:11.5px;width:32px;text-align:right">{{ r.progLabel }}</span></span>
+                </div>
+              </sc-for>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isCards }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
+        <sc-for list="{{ fleetRobots }}" as="r" hint-placeholder-count="9">
+          <div onClick="{{ r.open }}" style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:15px 16px;cursor:pointer;transition:border-color .12s,box-shadow .12s" style-hover="border-color:var(--color-border-strong);box-shadow:0 2px 10px rgba(0,0,0,.06)">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+              <span style="position:relative;width:10px;height:10px;flex:none">
+                <span style="position:absolute;inset:0;border-radius:9999px;background:{{ r.color }};{{ r.pulse }}"></span>
+              </span>
+              <div style="flex:1;min-width:0">
+                <div style="font-weight:600;font-family:var(--font-mono);font-size:13.5px">{{ r.id }}</div>
+                <div style="font-size:11.5px;color:var(--color-text-subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.model }} · {{ r.zoneName }}</div>
+              </div>
+              <span style="{{ r.badge }}">{{ r.statusLabel }}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <span style="font-size:11px;color:var(--color-text-placeholder);width:52px">Battery</span>
+              <div style="flex:1;height:6px;border-radius:9999px;background:var(--color-bg-muted);overflow:hidden"><div style="height:100%;width:{{ r.battery }}%;background:{{ r.battColor }};border-radius:9999px;transition:width .5s"></div></div>
+              <span style="font-family:var(--font-mono);font-size:11.5px;width:34px;text-align:right">{{ r.battLabel }}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:11px;color:var(--color-text-placeholder);width:52px">Task</span>
+              <div style="flex:1;height:6px;border-radius:9999px;background:var(--color-bg-muted);overflow:hidden"><div style="height:100%;width:{{ r.progress }}%;background:var(--color-action-primary);border-radius:9999px;transition:width .5s"></div></div>
+              <span style="font-family:var(--font-mono);font-size:11.5px;width:34px;text-align:right">{{ r.progLabel }}</span>
+            </div>
+            <div style="font-size:12px;color:var(--color-text-subtle);margin-top:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.task }}</div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <!-- ══ FLOOR MAP ══ -->
+    <sc-if value="{{ isMap }}" hint-placeholder-val="{{ true }}">
+    <div style="animation:lyra-rise .25s ease">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px">
+        <div>
+          <h1 style="margin:0 0 3px;font-size:22px;font-weight:600;letter-spacing:-.01em">Floor map</h1>
+          <p style="margin:0;font-size:13px;color:var(--color-text-subtle)">Building 4 — spatial view · positions update live</p>
+        </div>
+        <div style="display:flex;gap:3px;padding:3px;background:var(--color-bg-muted);border-radius:9px;flex:none">
+          <button onClick="{{ setMapLive }}" style="{{ mapLiveStyle }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="9"/></svg>Live</button>
+          <button onClick="{{ setMapHeat }}" style="{{ mapHeatStyle }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Congestion</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 260px;gap:16px">
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px">
+          <div style="position:relative;width:100%;padding-top:56%;border-radius:8px;background:var(--color-bg-subtle);overflow:hidden;background-image:linear-gradient(var(--color-border-default) 1px,transparent 1px),linear-gradient(90deg,var(--color-border-default) 1px,transparent 1px);background-size:5% 8.9%">
+            <div style="position:absolute;inset:0">
+              <sc-for list="{{ zonesLayout }}" as="z" hint-placeholder-count="6">
+                <div style="position:absolute;left:{{ z.x }}%;top:{{ z.y }}%;width:{{ z.w }}%;height:{{ z.h }}%;border:1px solid {{ z.border }};background:{{ z.fill }};border-radius:6px">
+                  <span style="position:absolute;top:6px;left:8px;font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:{{ z.color }}">{{ z.name }}</span>
+                  <span style="position:absolute;bottom:6px;left:8px;font-size:10px;color:var(--color-text-placeholder);font-family:var(--font-mono)">{{ z.kind }}</span>
+                </div>
+              </sc-for>
+              <sc-if value="{{ isMapHeat }}" hint-placeholder-val="{{ false }}">
+                <sc-for list="{{ heatCells }}" as="c" hint-placeholder-count="14">
+                  <div style="position:absolute;left:{{ c.x }}%;top:{{ c.y }}%;width:{{ c.w }}%;height:{{ c.h }}%;background:{{ c.color }};transition:background .4s"></div>
+                </sc-for>
+              </sc-if>
+              <sc-for list="{{ noGoZones }}" as="z" hint-placeholder-count="2">
+                <div title="{{ z.name }}" style="position:absolute;left:{{ z.x }}%;top:{{ z.y }}%;width:{{ z.w }}%;height:{{ z.h }}%;border-radius:4px;border:1px dashed var(--red-500);background:repeating-linear-gradient(45deg,transparent,transparent 5px,color-mix(in srgb,var(--red-500) 15%,transparent) 5px,color-mix(in srgb,var(--red-500) 15%,transparent) 10px)"></div>
+              </sc-for>
+              <sc-for list="{{ dockMarkers }}" as="d" hint-placeholder-count="8">
+                <div title="{{ d.title }}" style="position:absolute;left:{{ d.x }}%;top:{{ d.y }}%;transform:translate(-50%,-50%);width:13px;height:8px;border-radius:2px;background:{{ d.color }};border:1.5px solid {{ d.border }}"></div>
+              </sc-for>
+              <sc-if value="{{ isMapLive }}" hint-placeholder-val="{{ true }}">
+              <sc-for list="{{ humans }}" as="h" hint-placeholder-count="2">
+                <div style="position:absolute;left:{{ h.x }}%;top:{{ h.y }}%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--yellow-500)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="3.2"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/></svg>
+                </div>
+              </sc-for>
+              <sc-for list="{{ mapRobots }}" as="r" hint-placeholder-count="20">
+                <div onClick="{{ r.open }}" title="{{ r.id }}" style="position:absolute;left:{{ r.x }}%;top:{{ r.y }}%;transform:translate(-50%,-50%);width:16px;height:16px;cursor:pointer;transition:left 1.3s linear,top 1.3s linear">
+                  <span style="position:absolute;inset:0;border-radius:9999px;background:{{ r.color }};box-shadow:0 0 0 2px var(--color-bg-default);{{ r.pulse }}"></span>
+                  <sc-if value="{{ r.isFault }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:-3px;border-radius:9999px;border:2px solid var(--red-500);animation:lyra-ring 1.4s ease-out infinite"></span></sc-if>
+                </div>
+              </sc-for>
+              </sc-if>
+            </div>
+          </div>
+          <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--color-text-subtle)">
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:9999px;background:var(--green-500)"></span>Active</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:9999px;background:var(--blue-500)"></span>Charging</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:9999px;background:var(--gray-400)"></span>Idle</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:9999px;background:var(--red-500)"></span>Fault</span>
+            <span style="display:flex;align-items:center;gap:6px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--yellow-500)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="3.2"/><path d="M6 21v-2a6 6 0 0 1 12 0v2"/></svg>Personnel</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:15px;height:9px;border-radius:2px;border:1px dashed var(--red-500);background:repeating-linear-gradient(45deg,transparent,transparent 3px,color-mix(in srgb,var(--red-500) 18%,transparent) 3px,color-mix(in srgb,var(--red-500) 18%,transparent) 6px)"></span>No-go zone</span>
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:13px;height:8px;border-radius:2px;border:1.5px solid var(--green-500)"></span>Charge dock</span>
+            <sc-if value="{{ isMapHeat }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;gap:7px;margin-left:auto"><span style="font-family:var(--font-mono);font-size:11px">low</span><span style="width:60px;height:9px;border-radius:9999px;background:linear-gradient(90deg,color-mix(in srgb,var(--green-500) 45%,transparent),color-mix(in srgb,var(--yellow-500) 62%,transparent),color-mix(in srgb,var(--red-500) 72%,transparent))"></span><span style="font-family:var(--font-mono);font-size:11px">high density</span></span></sc-if>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:15px 16px">
+            <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600;margin-bottom:10px">Safety state</div>
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px">E-stops engaged</span><span style="font-family:var(--font-mono);font-weight:600;color:{{ safety.estopColor }}">{{ safety.estops }}</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px">Personnel in zones</span><span style="font-family:var(--font-mono);font-weight:600;color:var(--color-text-warning)">{{ safety.humans }}</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px">Speed-limited zones</span><span style="font-family:var(--font-mono);font-weight:600">{{ safety.slowed }}</span></div>
+            </div>
+          </div>
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:15px 16px;flex:1">
+            <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600;margin-bottom:10px">Zone density</div>
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <sc-for list="{{ zoneStats }}" as="z" hint-placeholder-count="6">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px"><span style="color:var(--color-text-subtle);white-space:nowrap">{{ z.name }}</span><span style="font-family:var(--font-mono)">{{ z.count }}</span></div>
+                  <div style="height:5px;border-radius:9999px;background:var(--color-bg-muted);overflow:hidden"><div style="height:100%;width:{{ z.pct }}%;background:{{ z.color }};border-radius:9999px"></div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ══ JOB QUEUE ══ -->
+    <sc-if value="{{ isTasks }}" hint-placeholder-val="{{ true }}">
+    <div style="animation:lyra-rise .25s ease">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px">
+        <div>
+          <h1 style="margin:0 0 3px;font-size:22px;font-weight:600;letter-spacing:-.01em">Job queue</h1>
+          <p style="margin:0;font-size:13px;color:var(--color-text-subtle)">Scheduling across the floor · {{ jobCount }} jobs today</p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start">
+        <sc-for list="{{ jobColumns }}" as="col" hint-placeholder-count="4">
+          <div style="background:var(--color-bg-subtle);border:1px solid var(--color-border-default);border-radius:12px;padding:12px;min-height:120px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:0 2px">
+              <span style="width:8px;height:8px;border-radius:2px;background:{{ col.color }}"></span>
+              <span style="font-size:12.5px;font-weight:600;white-space:nowrap">{{ col.title }}</span>
+              <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--color-text-subtle);margin-left:auto">{{ col.count }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ col.jobs }}" as="j" hint-placeholder-count="3">
+                <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:10px;padding:11px 12px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                    <span style="font-family:var(--font-mono);font-size:11px;color:var(--color-text-placeholder)">{{ j.id }}</span>
+                    <span style="{{ j.prioStyle }}">{{ j.priority }}</span>
+                  </div>
+                  <div style="font-size:13px;font-weight:500;margin-bottom:8px;line-height:1.3">{{ j.title }}</div>
+                  <sc-if value="{{ j.showBar }}" hint-placeholder-val="{{ false }}">
+                    <div style="height:5px;border-radius:9999px;background:var(--color-bg-muted);overflow:hidden;margin-bottom:9px"><div style="height:100%;width:{{ j.progress }}%;background:var(--color-action-primary);border-radius:9999px;transition:width .5s"></div></div>
+                  </sc-if>
+                  <div style="display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--color-text-subtle)">
+                    <span style="font-family:var(--font-mono)">{{ j.robot }}</span>
+                    <span>{{ j.meta }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ══ ALERTS ══ -->
+    <sc-if value="{{ isAlerts }}" hint-placeholder-val="{{ true }}">
+    <div style="animation:lyra-rise .25s ease">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px">
+        <div>
+          <h1 style="margin:0 0 3px;font-size:22px;font-weight:600;letter-spacing:-.01em">Alerts &amp; incidents</h1>
+          <p style="margin:0;font-size:13px;color:var(--color-text-subtle)">Live stream and the rules that raise it</p>
+        </div>
+        <div style="display:flex;gap:3px;padding:3px;background:var(--color-bg-muted);border-radius:10px;flex:none">
+          <button onClick="{{ setIncTab }}" style="{{ tabIncStyle }}">Incidents</button>
+          <button onClick="{{ setRulesTab }}" style="{{ tabRulesStyle }}">Rules &amp; routing</button>
+        </div>
+      </div>
+      <sc-if value="{{ isIncidentsTab }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px">
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-left:3px solid var(--red-500);border-radius:12px;padding:14px 16px">
+          <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">Critical</div>
+          <div style="font-size:26px;font-weight:600;font-family:var(--font-mono);margin-top:4px;color:var(--red-500)">{{ sevCounts.critical }}</div>
+        </div>
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-left:3px solid var(--yellow-500);border-radius:12px;padding:14px 16px">
+          <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">Warning</div>
+          <div style="font-size:26px;font-weight:600;font-family:var(--font-mono);margin-top:4px;color:var(--yellow-500)">{{ sevCounts.warning }}</div>
+        </div>
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-left:3px solid var(--blue-500);border-radius:12px;padding:14px 16px">
+          <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">Info</div>
+          <div style="font-size:26px;font-weight:600;font-family:var(--font-mono);margin-top:4px;color:var(--blue-500)">{{ sevCounts.info }}</div>
+        </div>
+      </div>
+      <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+        <sc-for list="{{ alertList }}" as="a" hint-placeholder-count="6">
+          <div onClick="{{ a.onOpen }}" style="{{ a.rowStyle }}" style-hover="background:var(--color-bg-subtle)">
+            <span style="width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;font-weight:700;font-size:14px;background:{{ a.tint }};color:{{ a.tone }}">{{ a.glyph }}</span>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13.5px;font-weight:500;{{ a.strike }}">{{ a.msg }}</div>
+              <div style="font-size:11.5px;color:var(--color-text-subtle);margin-top:2px"><span style="font-family:var(--font-mono)">{{ a.robot }}</span> · {{ a.zone }} · {{ a.time }}</div>
+            </div>
+            <sc-if value="{{ a.open }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;gap:8px;flex:none">
+                <button onClick="{{ a.onAck }}" style="padding:5px 11px;border-radius:7px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-bg-muted)">Ack</button>
+                <button onClick="{{ a.onResolve }}" style="padding:5px 11px;border-radius:7px;border:1px solid transparent;background:var(--color-action-primary);color:#fff;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-action-primary-hover)">Resolve</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ a.acked }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:11.5px;color:var(--color-text-subtle);font-family:var(--font-mono);flex:none">acknowledged</span>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isRulesTab }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:16px;align-items:start">
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--color-border-default)"><span style="font-size:13px;font-weight:600">Alert rules &amp; thresholds</span><span style="font-size:11.5px;color:var(--color-text-subtle)">Conditions that raise an incident</span></div>
+          <sc-for list="{{ rulesView }}" as="r" hint-placeholder-count="5">
+            <div style="{{ r.rowStyle }}">
+              <button onClick="{{ r.toggle }}" style="{{ r.toggleStyle }}"><span style="{{ r.knobStyle }}"></span></button>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+                  <span style="font-size:13.5px;font-weight:600">{{ r.name }}</span>
+                  <span style="padding:1px 8px;border-radius:9999px;font-size:10px;font-weight:600;background:{{ r.sevBg }};color:{{ r.sevTone }}">{{ r.sevLabel }}</span>
+                </div>
+                <div style="font-size:12px;color:var(--color-text-subtle)">{{ r.display }}</div>
+                <div style="font-size:11.5px;color:var(--color-text-placeholder);margin-top:3px">→ {{ r.action }}</div>
+              </div>
+              <sc-if value="{{ r.editable }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;align-items:center;border:1px solid var(--color-border-default);border-radius:8px;overflow:hidden;flex:none">
+                  <button onClick="{{ r.dec }}" style="width:30px;height:30px;border:none;background:transparent;color:var(--color-text-subtle);cursor:pointer;font-size:17px;line-height:1;font-family:var(--font-sans)" style-hover="background:var(--color-bg-muted)">−</button>
+                  <span style="min-width:52px;text-align:center;font-family:var(--font-mono);font-size:13px;font-weight:600">{{ r.valueLabel }}</span>
+                  <button onClick="{{ r.inc }}" style="width:30px;height:30px;border:none;border-left:1px solid var(--color-border-default);background:transparent;color:var(--color-text-subtle);cursor:pointer;font-size:16px;line-height:1;font-family:var(--font-sans)" style-hover="background:var(--color-bg-muted)">+</button>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+          <div style="padding:14px 16px;font-size:13px;font-weight:600;border-bottom:1px solid var(--color-border-default)">Notification routing</div>
+          <sc-for list="{{ routing }}" as="rt" hint-placeholder-count="5">
+            <div style="padding:13px 16px;border-bottom:1px solid var(--color-border-default)">
+              <div style="font-size:13px;font-weight:500">{{ rt.channel }}</div>
+              <div style="font-size:11.5px;color:var(--color-text-subtle);margin-bottom:8px">{{ rt.target }}</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <sc-for list="{{ rt.chips }}" as="c" hint-placeholder-count="3">
+                  <span style="{{ c.style }}">{{ c.label }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <!-- ══ ANALYTICS ══ -->
+    <sc-if value="{{ isAnalytics }}" hint-placeholder-val="{{ true }}">
+    <div style="animation:lyra-rise .25s ease">
+      <div style="margin-bottom:18px">
+        <h1 style="margin:0 0 3px;font-size:22px;font-weight:600;letter-spacing:-.01em">Analytics</h1>
+        <p style="margin:0;font-size:13px;color:var(--color-text-subtle)">Throughput &amp; utilization · shift to date</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px">
+        <sc-for list="{{ anaKpis }}" as="k" hint-placeholder-count="4">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px 18px">
+            <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">{{ k.label }}</div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:8px">
+              <span style="font-size:26px;font-weight:600;font-family:var(--font-mono);letter-spacing:-.02em">{{ k.value }}</span>
+              <span style="font-size:12px;font-weight:600;color:{{ k.deltaColor }}">{{ k.delta }}</span>
+            </div>
+            <div style="font-size:11.5px;color:var(--color-text-subtle);margin-top:2px">{{ k.helper }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:16px">
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:18px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+            <span style="font-size:13px;font-weight:600">Units completed / hour</span>
+            <span style="font-size:11.5px;color:var(--color-text-subtle);font-family:var(--font-mono)">last 12h</span>
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:8px;height:200px">
+            <sc-for list="{{ throughput }}" as="b" hint-placeholder-count="12">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+                <div style="width:100%;border-radius:5px 5px 0 0;background:{{ b.fill }};height:{{ b.h }}%;transition:height .5s;position:relative">
+                  <sc-if value="{{ b.cur }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;border-radius:5px 5px 0 0;overflow:hidden"><span style="position:absolute;top:0;left:0;width:30%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:lyra-sweep 2s linear infinite"></span></span></sc-if>
+                </div>
+                <span style="font-size:10px;color:var(--color-text-placeholder);font-family:var(--font-mono)">{{ b.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:16px">Utilization by zone</div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ utilization }}" as="u" hint-placeholder-count="6">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px"><span style="color:var(--color-text-subtle);white-space:nowrap">{{ u.name }}</span><span style="font-family:var(--font-mono);font-weight:500">{{ u.pct }}%</span></div>
+                <div style="height:8px;border-radius:9999px;background:var(--color-bg-muted);overflow:hidden"><div style="height:100%;width:{{ u.pct }}%;background:{{ u.color }};border-radius:9999px;transition:width .5s"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:16px;margin-top:16px">
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:18px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <span style="font-size:13px;font-weight:600">Fleet uptime — 7 days</span>
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-success)">{{ uptimeLast }}</span>
+          </div>
+          <svg viewBox="0 0 280 90" preserveAspectRatio="none" style="width:100%;height:104px;display:block">
+            <polyline points="{{ uptimeArea }}" fill="color-mix(in srgb,var(--color-action-primary) 12%,transparent)" stroke="none"/>
+            <polyline points="{{ uptimePts }}" fill="none" stroke="var(--color-action-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div style="display:flex;justify-content:space-between;margin-top:8px">
+            <sc-for list="{{ uptimeDots }}" as="d" hint-placeholder-count="7">
+              <span style="font-size:10px;color:var(--color-text-placeholder);font-family:var(--font-mono)">{{ d.label }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:16px">MTBF by model</div>
+          <div style="display:flex;flex-direction:column;gap:15px">
+            <sc-for list="{{ mtbfByModel }}" as="m" hint-placeholder-count="3">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px"><span style="color:var(--color-text-subtle);white-space:nowrap">{{ m.name }}</span><span style="font-family:var(--font-mono);font-weight:500">{{ m.mtbf }}</span></div>
+                <div style="height:8px;border-radius:9999px;background:var(--color-bg-muted);overflow:hidden"><div style="height:100%;width:{{ m.pct }}%;background:var(--blue-500);border-radius:9999px;transition:width .5s"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:16px">Charge cycles / day</div>
+          <div style="display:flex;align-items:flex-end;gap:8px;height:150px">
+            <sc-for list="{{ chargeCycles }}" as="b" hint-placeholder-count="7">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+                <span style="font-family:var(--font-mono);font-size:10px;color:var(--color-text-subtle)">{{ b.v }}</span>
+                <div style="width:100%;border-radius:5px 5px 0 0;background:{{ b.fill }};height:{{ b.h }}%;transition:height .5s"></div>
+                <span style="font-size:10px;color:var(--color-text-placeholder);font-family:var(--font-mono)">{{ b.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ══ ROBOT DETAIL / TELEOP ══ -->
+    <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+    <div style="animation:lyra-rise .25s ease">
+      <button onClick="{{ goFleet }}" style="display:inline-flex;align-items:center;gap:6px;background:transparent;border:none;color:var(--color-text-subtle);font-size:12.5px;cursor:pointer;padding:0;margin-bottom:14px;font-family:var(--font-sans)" style-hover="color:var(--color-text-default)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg><span style="white-space:nowrap">Back to fleet</span>
+      </button>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+        <span style="position:relative;width:14px;height:14px;flex:none"><span style="position:absolute;inset:0;border-radius:9999px;background:{{ sel.color }};{{ sel.pulse }}"></span></span>
+        <div>
+          <h1 style="margin:0;font-size:22px;font-weight:600;font-family:var(--font-mono);letter-spacing:-.01em">{{ sel.id }}</h1>
+          <p style="margin:2px 0 0;font-size:13px;color:var(--color-text-subtle)">{{ sel.model }} · {{ sel.zoneName }} · uptime {{ sel.uptime }}h</p>
+        </div>
+        <span style="{{ sel.badge }};margin-left:auto">{{ sel.statusLabel }}</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:16px">
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:14px">Live task</div>
+          <div style="font-size:15px;font-weight:500;margin-bottom:12px">{{ sel.task }}</div>
+          <div style="height:9px;border-radius:9999px;background:var(--color-bg-muted);overflow:hidden;margin-bottom:8px"><div style="height:100%;width:{{ sel.progress }}%;background:var(--color-action-primary);border-radius:9999px;transition:width .5s"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-subtle);font-family:var(--font-mono)"><span>{{ sel.progLabel }} complete</span><span>cycle {{ sel.cycleTime }}s</span></div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px">
+            <sc-for list="{{ sel.telemetry }}" as="t" hint-placeholder-count="4">
+              <div style="background:var(--color-bg-subtle);border-radius:10px;padding:12px 14px">
+                <div style="font-size:11px;color:var(--color-text-placeholder);text-transform:uppercase;letter-spacing:.05em;font-weight:600">{{ t.label }}</div>
+                <div style="font-size:19px;font-weight:600;font-family:var(--font-mono);margin-top:5px">{{ t.value }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--color-border-default)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+              <span style="font-size:11px;color:var(--color-text-placeholder);text-transform:uppercase;letter-spacing:.05em;font-weight:600">Battery — last 90 min</span>
+              <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-subtle)">{{ sel.sparkLast }}%</span>
+            </div>
+            <svg viewBox="0 0 200 42" preserveAspectRatio="none" style="width:100%;height:44px;display:block"><polyline points="{{ sel.spark }}" fill="none" stroke="var(--color-action-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="margin-top:16px;display:flex;align-items:center;gap:12px">
+            <span style="font-size:11px;color:var(--color-text-placeholder);text-transform:uppercase;letter-spacing:.05em;font-weight:600;width:110px">Next service</span>
+            <div style="flex:1;height:6px;border-radius:9999px;background:var(--color-bg-muted);overflow:hidden"><div style="height:100%;width:{{ sel.serviceBar }}%;background:{{ sel.serviceBarColor }};border-radius:9999px"></div></div>
+            <span style="font-family:var(--font-mono);font-size:12.5px;font-weight:600;color:{{ sel.serviceColor }};white-space:nowrap">{{ sel.nextServiceLabel }}</span>
+            <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--color-text-subtle);white-space:nowrap">MTBF {{ sel.mtbf }}</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:6px">Camera feed</div>
+            <div style="position:relative;width:100%;padding-top:56%;border-radius:8px;background:var(--gray-800);overflow:hidden">
+              <div style="position:absolute;inset:0;display:grid;place-items:center;color:var(--gray-500)">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
+              </div>
+              <span style="position:absolute;top:8px;left:9px;display:flex;align-items:center;gap:5px;font-size:10.5px;color:#fff;font-family:var(--font-mono)"><span style="width:6px;height:6px;border-radius:9999px;background:var(--red-500);animation:lyra-pulse 1.4s infinite"></span>REC · head cam</span>
+            </div>
+          </div>
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px;flex:1">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px">Commands</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+              <button onClick="{{ cmdPause }}" style="{{ cmdPauseStyle }}" style-hover="background:var(--color-bg-muted)">{{ cmdPauseLabel }}</button>
+              <button onClick="{{ cmdReassign }}" style="grid-column:auto;padding:9px;border-radius:8px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-bg-muted)">Reassign task</button>
+              <button onClick="{{ cmdCharge }}" style="padding:9px;border-radius:8px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-bg-muted)">Send to charge</button>
+              <button onClick="{{ cmdRecall }}" style="padding:9px;border-radius:8px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-bg-muted)">Recall to bay</button>
+              <button onClick="{{ cmdEstop }}" style="grid-column:1/-1;padding:11px;border-radius:8px;border:1px solid var(--red-500);background:var(--red-500);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-sans);display:flex;align-items:center;justify-content:center;gap:8px" style-hover="filter:brightness(1.05)"><span style="width:9px;height:9px;border-radius:9999px;background:#fff"></span>Emergency stop</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:16px">
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:14px">Joint / actuator status</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <sc-for list="{{ sel.joints }}" as="j" hint-placeholder-count="8">
+              <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--color-bg-subtle);border-radius:9px">
+                <span style="width:8px;height:8px;border-radius:9999px;background:{{ j.dot }};flex:none"></span>
+                <span style="flex:1;font-size:12.5px;font-weight:500">{{ j.name }}</span>
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--color-text-subtle)">{{ j.temp }}</span>
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--color-text-subtle);width:34px;text-align:right">{{ j.load }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:18px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:13px;font-weight:600">Teleop</span><span style="font-size:10.5px;font-family:var(--font-mono);color:var(--color-text-warning);letter-spacing:.03em">MANUAL OVERRIDE</span></div>
+          <p style="margin:0 0 14px;font-size:11.5px;color:var(--color-text-subtle)">Nudge the unit while paused. Hold for continuous.</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:210px;margin:0 auto">
+            <span></span>
+            <button onClick="{{ sel.driveFwd }}" style="{{ padStyle }}" style-hover="background:var(--color-bg-muted)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button>
+            <span></span>
+            <button onClick="{{ sel.driveLeft }}" style="{{ padStyle }}" style-hover="background:var(--color-bg-muted)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+            <button onClick="{{ sel.driveStop }}" style="display:flex;align-items:center;justify-content:center;padding:12px;border-radius:9px;border:1px solid var(--red-500);background:color-mix(in srgb,var(--red-500) 12%,transparent);color:var(--color-text-danger);cursor:pointer;font-family:var(--font-sans);font-weight:600;font-size:12px" style-hover="background:color-mix(in srgb,var(--red-500) 20%,transparent)">Stop</button>
+            <button onClick="{{ sel.driveRight }}" style="{{ padStyle }}" style-hover="background:var(--color-bg-muted)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+            <span></span>
+            <button onClick="{{ sel.driveBack }}" style="{{ padStyle }}" style-hover="background:var(--color-bg-muted)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+            <span></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:18px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px">Event log</div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ sel.log }}" as="e" hint-placeholder-count="5">
+            <div style="display:flex;gap:12px;padding:9px 0;border-top:1px solid var(--color-border-default);font-size:12.5px">
+              <span style="font-family:var(--font-mono);color:var(--color-text-placeholder);flex:none;width:64px">{{ e.time }}</span>
+              <span style="width:7px;height:7px;border-radius:9999px;background:{{ e.color }};flex:none;margin-top:5px"></span>
+              <span style="flex:1">{{ e.text }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ══ MAINTENANCE ══ -->
+    <sc-if value="{{ isMaint }}" hint-placeholder-val="{{ false }}">
+    <div style="animation:lyra-rise .25s ease">
+      <div style="margin-bottom:18px">
+        <h1 style="margin:0 0 3px;font-size:22px;font-weight:600;letter-spacing:-.01em">Maintenance &amp; reliability</h1>
+        <p style="margin:0;font-size:13px;color:var(--color-text-subtle)">Service schedule, MTBF and open work orders</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px">
+        <sc-for list="{{ maintKpis }}" as="k" hint-placeholder-count="4">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px 18px">
+            <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">{{ k.label }}</div>
+            <div style="font-size:26px;font-weight:600;font-family:var(--font-mono);margin-top:8px">{{ k.value }}</div>
+            <div style="font-size:11.5px;color:var(--color-text-subtle);margin-top:2px">{{ k.helper }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px;align-items:start">
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+          <div style="padding:14px 18px;font-size:13px;font-weight:600;border-bottom:1px solid var(--color-border-default)">Service schedule</div>
+          <div style="display:grid;grid-template-columns:104px 128px 1fr 72px 84px;gap:12px;padding:9px 18px;border-bottom:1px solid var(--color-border-default);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600;white-space:nowrap"><span>Robot</span><span>Health</span><span>PM cycle</span><span>MTBF</span><span style="text-align:right">Service</span></div>
+          <sc-for list="{{ maintRows }}" as="r" hint-placeholder-count="10">
+            <div onClick="{{ r.open }}" style="display:grid;grid-template-columns:104px 128px 1fr 72px 84px;gap:12px;align-items:center;padding:10px 18px;border-bottom:1px solid var(--color-border-default);cursor:pointer;font-size:13px" style-hover="background:var(--color-bg-subtle)">
+              <span style="font-family:var(--font-mono);font-weight:600;font-size:12.5px">{{ r.id }}</span>
+              <span style="display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:9999px;background:{{ r.healthColor }};flex:none"></span><span style="white-space:nowrap">{{ r.health }}</span></span>
+              <span style="display:flex;align-items:center;gap:9px"><span style="flex:1;height:6px;border-radius:9999px;background:var(--color-bg-muted);overflow:hidden"><span style="display:block;height:100%;width:{{ r.pmPct }}%;background:{{ r.pmColor }};border-radius:9999px"></span></span><span style="font-family:var(--font-mono);font-size:10.5px;color:var(--color-text-subtle);white-space:nowrap">{{ r.pmLabel }}</span></span>
+              <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-subtle)">{{ r.mtbf }}</span>
+              <span style="font-family:var(--font-mono);font-size:12.5px;font-weight:600;text-align:right;color:{{ r.serviceColor }}">{{ r.service }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+          <div style="padding:14px 18px;font-size:13px;font-weight:600;border-bottom:1px solid var(--color-border-default)">Open work orders</div>
+          <sc-for list="{{ workOrders }}" as="w" hint-placeholder-count="5">
+            <div style="padding:13px 18px;border-bottom:1px solid var(--color-border-default)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--color-text-placeholder)">{{ w.id }}</span>
+                <span style="{{ w.prioStyle }}">{{ w.pri }}</span>
+                <span style="margin-left:auto;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:9999px;background:{{ w.chipBg }};color:{{ w.chipColor }}">{{ w.status }}</span>
+              </div>
+              <div style="font-size:13px;font-weight:500;margin-bottom:5px">{{ w.title }}</div>
+              <div style="font-size:11.5px;color:var(--color-text-subtle)"><span style="font-family:var(--font-mono)">{{ w.robot }}</span> · {{ w.tech }} · opened {{ w.age }} ago</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;align-items:start">
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+          <div style="padding:14px 18px;font-size:13px;font-weight:600;border-bottom:1px solid var(--color-border-default)">Spare parts inventory</div>
+          <div style="display:grid;grid-template-columns:1fr 58px 74px 66px;gap:12px;padding:9px 18px;border-bottom:1px solid var(--color-border-default);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600"><span>Part</span><span>Bin</span><span style="text-align:right">Stock / min</span><span style="text-align:right">Status</span></div>
+          <sc-for list="{{ parts }}" as="p" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:1fr 58px 74px 66px;gap:12px;align-items:center;padding:11px 18px;border-bottom:1px solid var(--color-border-default);font-size:13px">
+              <span style="min-width:0"><span style="display:block;font-weight:500">{{ p.name }}</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--color-text-placeholder)">{{ p.sku }}</span></span>
+              <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-subtle)">{{ p.loc }}</span>
+              <span style="font-family:var(--font-mono);font-size:12.5px;text-align:right">{{ p.stock }} / {{ p.min }}</span>
+              <span style="text-align:right"><span style="display:inline-block;padding:2px 9px;border-radius:9999px;font-size:10.5px;font-weight:600;background:{{ p.chipBg }};color:{{ p.chipColor }}">{{ p.state }}</span></span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--color-border-default)"><span style="font-size:13px;font-weight:600">Out of service</span><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-subtle)">{{ outCount }} units</span></div>
+          <sc-if value="{{ hasOut }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ outOfService }}" as="o" hint-placeholder-count="3">
+              <div onClick="{{ o.open }}" style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--color-border-default);cursor:pointer" style-hover="background:var(--color-bg-subtle)">
+                <span style="font-family:var(--font-mono);font-weight:600;font-size:13px">{{ o.id }}</span>
+                <span style="flex:1;min-width:0;font-size:12px;color:var(--color-text-subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.model }} · {{ o.zone }}</span>
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:{{ o.reasonColor }};flex:none"><span style="width:7px;height:7px;border-radius:9999px;background:{{ o.reasonColor }}"></span>{{ o.reason }}</span>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ noOut }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:28px 18px;text-align:center;font-size:12.5px;color:var(--color-text-subtle)">All units in service.</div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ══ PLANT ROLLUP ══ -->
+    <sc-if value="{{ isRollup }}" hint-placeholder-val="{{ false }}">
+    <div style="animation:lyra-rise .25s ease">
+      <div style="margin-bottom:18px">
+        <h1 style="margin:0 0 3px;font-size:22px;font-weight:600;letter-spacing:-.01em">Plant rollup</h1>
+        <p style="margin:0;font-size:13px;color:var(--color-text-subtle)">Manager view · {{ curPlantName }} · shift B to date</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px">
+        <sc-for list="{{ rollupKpis }}" as="k" hint-placeholder-count="4">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px 18px">
+            <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">{{ k.label }}</div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:8px">
+              <span style="font-size:26px;font-weight:600;font-family:var(--font-mono);letter-spacing:-.02em">{{ k.value }}</span>
+              <span style="font-size:12px;font-weight:600;color:{{ k.deltaColor }}">{{ k.delta }}</span>
+            </div>
+            <div style="font-size:11.5px;color:var(--color-text-subtle);margin-top:2px">{{ k.helper }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px">
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+          <div style="padding:14px 18px;font-size:13px;font-weight:600;border-bottom:1px solid var(--color-border-default)">Line performance</div>
+          <div style="display:grid;grid-template-columns:1fr 70px 84px 74px;gap:12px;padding:9px 18px;border-bottom:1px solid var(--color-border-default);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600;white-space:nowrap"><span>Line</span><span style="text-align:right">Units</span><span style="text-align:right">Units/hr</span><span style="text-align:right">OEE</span></div>
+          <sc-for list="{{ rollLines }}" as="l" hint-placeholder-count="4">
+            <div style="padding:12px 18px;border-bottom:1px solid var(--color-border-default)">
+              <div style="display:grid;grid-template-columns:1fr 70px 84px 74px;gap:12px;align-items:center;font-size:13px;margin-bottom:8px">
+                <span style="display:flex;align-items:center;gap:9px;font-weight:500"><span style="width:8px;height:8px;border-radius:2px;background:{{ l.color }};flex:none"></span>{{ l.name }}</span>
+                <span style="font-family:var(--font-mono);text-align:right;color:var(--color-text-subtle)">{{ l.units }}</span>
+                <span style="font-family:var(--font-mono);text-align:right;color:var(--color-text-subtle)">{{ l.unitsHr }}</span>
+                <span style="font-family:var(--font-mono);text-align:right;font-weight:600;color:{{ l.oeeColor }}">{{ l.oee }}%</span>
+              </div>
+              <div style="height:6px;border-radius:9999px;background:var(--color-bg-muted);overflow:hidden"><div style="height:100%;width:{{ l.oee }}%;background:{{ l.oeeColor }};border-radius:9999px;transition:width .5s"></div></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:18px">Output by shift</div>
+          <div style="display:flex;align-items:flex-end;gap:16px;height:190px">
+            <sc-for list="{{ shiftBars }}" as="b" hint-placeholder-count="3">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end">
+                <div style="width:100%;border-radius:6px 6px 0 0;background:{{ b.fill }};height:{{ b.h }}%;transition:height .5s"></div>
+                <span style="font-size:11px;color:var(--color-text-subtle)">{{ b.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ══ CHARGING & DOCKS ══ -->
+    <sc-if value="{{ isCharge }}" hint-placeholder-val="{{ false }}">
+    <div style="animation:lyra-rise .25s ease">
+      <div style="margin-bottom:18px">
+        <h1 style="margin:0 0 3px;font-size:22px;font-weight:600;letter-spacing:-.01em">Charging &amp; docks</h1>
+        <p style="margin:0;font-size:13px;color:var(--color-text-subtle)">Charge dock · {{ chg.occupied }} of {{ chg.bayCount }} bays in use · {{ chg.draw }} kW draw</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px">
+        <sc-for list="{{ chgKpis }}" as="k" hint-placeholder-count="4">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px 18px">
+            <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">{{ k.label }}</div>
+            <div style="font-size:26px;font-weight:600;font-family:var(--font-mono);margin-top:8px">{{ k.value }}</div>
+            <div style="font-size:11.5px;color:var(--color-text-subtle);margin-top:2px">{{ k.helper }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <div style="font-size:12px;font-weight:600;color:var(--color-text-subtle);white-space:nowrap">Power draw</div>
+        <div style="flex:1;min-width:200px;height:10px;border-radius:9999px;overflow:hidden;background:var(--color-bg-muted)"><div style="height:100%;width:{{ chg.drawPct }}%;background:var(--color-action-primary);border-radius:9999px;transition:width .5s"></div></div>
+        <div style="font-family:var(--font-mono);font-size:12.5px"><b>{{ chg.draw }}</b> / {{ chg.cap }} kW</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start">
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:18px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:14px">Dock bays</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:12px">
+            <sc-for list="{{ chgBays }}" as="b" hint-placeholder-count="8">
+              <div style="background:var(--color-bg-subtle);border:1px solid var(--color-border-default);border-radius:11px;padding:13px 14px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                  <span style="font-family:var(--font-mono);font-weight:600;font-size:12.5px">{{ b.id }}</span>
+                  <span style="font-size:10px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:2px 7px;border-radius:9999px;background:var(--color-bg-muted);color:var(--color-text-subtle)">{{ b.type }}</span>
+                </div>
+                <sc-if value="{{ b.charging }}" hint-placeholder-val="{{ true }}">
+                  <div onClick="{{ b.open }}" style="display:flex;align-items:center;gap:13px;cursor:pointer">
+                    <div style="width:62px;height:62px;border-radius:9999px;background:conic-gradient({{ b.ringColor }} {{ b.soc }}%, var(--color-bg-muted) 0);display:grid;place-items:center;flex:none">
+                      <div style="width:46px;height:46px;border-radius:9999px;background:var(--color-bg-default);display:grid;place-items:center;font-family:var(--font-mono);font-weight:600;font-size:13px">{{ b.socLabel }}</div>
+                    </div>
+                    <div style="min-width:0">
+                      <div style="font-family:var(--font-mono);font-weight:600;font-size:13px;white-space:nowrap">{{ b.robot }}</div>
+                      <div style="font-size:11.5px;color:var(--color-text-subtle);margin-top:3px">{{ b.rate }}</div>
+                      <div style="font-size:11.5px;color:var(--color-text-subtle);font-family:var(--font-mono)">full {{ b.eta }}</div>
+                    </div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ b.available }}" hint-placeholder-val="{{ false }}">
+                  <div style="height:62px;border:1.5px dashed var(--color-border-default);border-radius:10px;display:grid;place-items:center;color:var(--color-text-placeholder);font-size:12px">Available</div>
+                </sc-if>
+                <sc-if value="{{ b.offline }}" hint-placeholder-val="{{ false }}">
+                  <div style="height:62px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--gray-500) 12%,transparent);color:var(--color-text-subtle);font-size:12px">Offline · service</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+          <div style="padding:14px 18px;font-size:13px;font-weight:600;border-bottom:1px solid var(--color-border-default);display:flex;align-items:center;justify-content:space-between">Charge queue<span style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-subtle)">{{ chgQueueCount }}</span></div>
+          <sc-if value="{{ hasQueue }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ chgQueue }}" as="q" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:11px;padding:12px 16px;border-bottom:1px solid var(--color-border-default)">
+                <div style="flex:1;min-width:0">
+                  <div style="font-family:var(--font-mono);font-weight:600;font-size:12.5px">{{ q.id }}</div>
+                  <div style="font-size:11.5px;color:var(--color-text-subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ q.zone }}</div>
+                </div>
+                <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:{{ q.battColor }}">{{ q.batt }}</span>
+                <button onClick="{{ q.send }}" style="padding:5px 10px;border-radius:7px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);font-size:11.5px;font-weight:500;cursor:pointer;font-family:var(--font-sans);white-space:nowrap" style-hover="background:var(--color-bg-muted)">Dock</button>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ noQueue }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:32px 18px;text-align:center;color:var(--color-text-placeholder);font-size:12.5px">No units waiting for a dock.</div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ══ INCIDENT DETAIL ══ -->
+    <sc-if value="{{ isIncident }}" hint-placeholder-val="{{ false }}">
+    <div style="animation:lyra-rise .25s ease">
+      <button onClick="{{ goAlerts }}" style="display:inline-flex;align-items:center;gap:6px;background:transparent;border:none;color:var(--color-text-subtle);font-size:12.5px;cursor:pointer;padding:0;margin-bottom:14px;font-family:var(--font-sans)" style-hover="color:var(--color-text-default)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg><span style="white-space:nowrap">Back to alerts</span>
+      </button>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+        <span style="width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;font-weight:700;font-size:17px;background:{{ inc.tint }};color:{{ inc.tone }}">{{ inc.glyph }}</span>
+        <div style="flex:1;min-width:0">
+          <h1 style="margin:0;font-size:20px;font-weight:600;letter-spacing:-.01em;line-height:1.25">{{ inc.title }}</h1>
+          <p style="margin:3px 0 0;font-size:12.5px;color:var(--color-text-subtle)"><span style="font-family:var(--font-mono)">{{ inc.robot }}</span> · {{ inc.zone }} · {{ inc.time }}</p>
+        </div>
+        <span style="{{ inc.chip }}">{{ inc.chipLabel }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:16px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:18px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:16px">Root-cause timeline</div>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ inc.timeline }}" as="e" hint-placeholder-count="4">
+                <div style="display:flex;gap:13px;padding-bottom:16px">
+                  <div style="display:flex;flex-direction:column;align-items:center;flex:none"><span style="width:10px;height:10px;border-radius:9999px;background:{{ e.color }};margin-top:3px;flex:none"></span><span style="flex:1;width:2px;background:var(--color-border-default);margin-top:3px"></span></div>
+                  <div style="flex:1;padding-bottom:2px"><div style="font-size:13px;line-height:1.35">{{ e.text }}</div><div style="font-size:11px;color:var(--color-text-subtle);font-family:var(--font-mono);margin-top:3px">{{ e.t }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-left:3px solid {{ inc.tone }};border-radius:12px;padding:16px 18px">
+            <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600;margin-bottom:7px">Recommended action</div>
+            <div style="font-size:13.5px;line-height:1.45">{{ inc.recommended }}</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px 18px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px">Details</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ inc.details }}" as="d" hint-placeholder-count="5">
+                <div style="display:flex;justify-content:space-between;font-size:13px;gap:12px"><span style="color:var(--color-text-subtle)">{{ d.label }}</span><span style="font-family:var(--font-mono);text-align:right">{{ d.value }}</span></div>
+              </sc-for>
+            </div>
+          </div>
+          <sc-if value="{{ inc.hasRobot }}" hint-placeholder-val="{{ true }}">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px 18px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px">Telemetry snapshot</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <sc-for list="{{ inc.snapshot }}" as="t" hint-placeholder-count="4">
+                <div style="background:var(--color-bg-subtle);border-radius:9px;padding:10px 12px">
+                  <div style="font-size:10.5px;color:var(--color-text-placeholder);text-transform:uppercase;letter-spacing:.05em;font-weight:600">{{ t.label }}</div>
+                  <div style="font-size:17px;font-weight:600;font-family:var(--font-mono);margin-top:4px">{{ t.value }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+          <sc-if value="{{ inc.hasAffected }}" hint-placeholder-val="{{ false }}">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+            <div style="padding:13px 18px;font-size:13px;font-weight:600;border-bottom:1px solid var(--color-border-default)">Affected units</div>
+            <sc-for list="{{ inc.affected }}" as="r" hint-placeholder-count="3">
+              <div onClick="{{ r.open }}" style="display:flex;align-items:center;gap:10px;padding:11px 18px;border-bottom:1px solid var(--color-border-default);cursor:pointer" style-hover="background:var(--color-bg-subtle)">
+                <span style="font-family:var(--font-mono);font-weight:600;font-size:12.5px">{{ r.id }}</span>
+                <span style="font-size:11.5px;color:var(--color-text-subtle);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.model }}</span>
+                <span style="{{ r.badge }}">{{ r.status }}</span>
+              </div>
+            </sc-for>
+          </div>
+          </sc-if>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:14px 18px">
+        <sc-if value="{{ inc.hasRobot }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ inc.openRobot }}" style="padding:9px 15px;border-radius:8px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-bg-muted)">Open robot</button>
+        </sc-if>
+        <button onClick="{{ inc.onAssign }}" style="padding:9px 15px;border-radius:8px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-bg-muted)">Assign to tech</button>
+        <span style="flex:1"></span>
+        <button onClick="{{ inc.onAck }}" style="padding:9px 15px;border-radius:8px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-bg-muted)">Acknowledge</button>
+        <button onClick="{{ inc.onResolve }}" style="padding:9px 15px;border-radius:8px;border:none;background:var(--color-action-primary);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-action-primary-hover)">Resolve incident</button>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ══ SHIFT HANDOVER ══ -->
+    <sc-if value="{{ isHandover }}" hint-placeholder-val="{{ false }}">
+    <div style="animation:lyra-rise .25s ease">
+      <div style="margin-bottom:18px">
+        <h1 style="margin:0 0 3px;font-size:22px;font-weight:600;letter-spacing:-.01em">Shift handover</h1>
+        <p style="margin:0;font-size:13px;color:var(--color-text-subtle)">End of shift B · {{ curPlantName }} · prepared for shift C</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px">
+        <sc-for list="{{ hoKpis }}" as="k" hint-placeholder-count="4">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px 18px">
+            <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">{{ k.label }}</div>
+            <div style="font-size:26px;font-weight:600;font-family:var(--font-mono);margin-top:8px">{{ k.value }}</div>
+            <div style="font-size:11.5px;color:var(--color-text-subtle);margin-top:2px">{{ k.helper }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+            <div style="padding:14px 18px;font-size:13px;font-weight:600;border-bottom:1px solid var(--color-border-default);display:flex;align-items:center;justify-content:space-between">Carryover to next shift<span style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-subtle)">{{ carryCount }}</span></div>
+            <sc-for list="{{ carryover }}" as="c" hint-placeholder-count="5">
+              <div style="display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-bottom:1px solid var(--color-border-default)">
+                <span style="width:8px;height:8px;border-radius:9999px;background:{{ c.tone }};flex:none;margin-top:5px"></span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:13px;font-weight:500;line-height:1.3">{{ c.label }}</div>
+                  <div style="font-size:11.5px;color:var(--color-text-subtle);margin-top:2px"><span style="font-family:var(--font-mono)">{{ c.meta }}</span></div>
+                </div>
+                <span style="font-size:10px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:2px 8px;border-radius:9999px;background:var(--color-bg-muted);color:var(--color-text-subtle);flex:none;white-space:nowrap">{{ c.kind }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;overflow:hidden">
+            <div style="padding:14px 18px;font-size:13px;font-weight:600;border-bottom:1px solid var(--color-border-default)">Watch list</div>
+            <sc-for list="{{ hoWatch }}" as="r" hint-placeholder-count="4">
+              <div onClick="{{ r.open }}" style="display:flex;align-items:center;gap:11px;padding:11px 18px;border-bottom:1px solid var(--color-border-default);cursor:pointer" style-hover="background:var(--color-bg-subtle)">
+                <span style="width:8px;height:8px;border-radius:9999px;background:{{ r.healthColor }};flex:none"></span>
+                <span style="font-family:var(--font-mono);font-weight:600;font-size:12.5px">{{ r.id }}</span>
+                <span style="font-size:12px;color:var(--color-text-subtle);flex:1">{{ r.health }}</span>
+                <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:{{ r.serviceColor }}">{{ r.service }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px 18px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:6px">Shift notes</div>
+            <p style="margin:0 0 10px;font-size:11.5px;color:var(--color-text-subtle)">Anything the incoming supervisor should know.</p>
+            <textarea value="{{ handoverNotes }}" onInput="{{ onHandoverNote }}" placeholder="e.g. HX-224 isolated in weld cells, awaiting actuator swap. Pick zone running one unit short." style="width:100%;min-height:132px;resize:vertical;box-sizing:border-box;border:1px solid var(--color-border-default);border-radius:9px;background:var(--color-bg-subtle);color:var(--color-text-default);font-family:var(--font-sans);font-size:13px;line-height:1.5;padding:11px 12px;outline:none"></textarea>
+          </div>
+          <div style="background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:12px;padding:16px 18px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px">Sign-off</div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:15px">
+              <sc-for list="{{ hoChecklist }}" as="c" hint-placeholder-count="3">
+                <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer">
+                  <input type="checkbox" checked="{{ c.done }}" onChange="{{ c.toggle }}" style="width:16px;height:16px;accent-color:var(--color-action-primary);cursor:pointer" />
+                  <span style="{{ c.textStyle }}">{{ c.label }}</span>
+                </label>
+              </sc-for>
+            </div>
+            <button onClick="{{ signHandover }}" style="width:100%;padding:11px;border-radius:9px;border:none;background:var(--color-action-primary);color:#fff;font-size:13.5px;font-weight:600;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-action-primary-hover)">Complete handover</button>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:var(--color-text-subtle)">
+              <div style="width:26px;height:26px;border-radius:9999px;background:var(--color-bg-brand-subtle);color:var(--color-text-brand);display:grid;place-items:center;font-weight:600;font-size:11px;flex:none">RM</div>
+              <span>Outgoing: R. Marín · Incoming: T. Osei</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    </main>
+  </div>
+
+  <!-- ══ COMMAND PALETTE ══ -->
+  <sc-if value="{{ paletteOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closePalette }}" style="position:fixed;inset:0;z-index:50;background:rgba(8,12,20,.5);display:flex;align-items:flex-start;justify-content:center;padding-top:12vh;backdrop-filter:blur(2px)">
+    <div onClick="{{ stop }}" style="width:min(560px,92vw);background:var(--color-bg-default);border:1px solid var(--color-border-default);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.35);overflow:hidden">
+      <div style="display:flex;align-items:center;gap:11px;padding:14px 16px;border-bottom:1px solid var(--color-border-default)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-icon-subtle)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input value="{{ paletteQuery }}" onInput="{{ onPaletteInput }}" autofocus placeholder="Search robots, screens, actions…" style="flex:1;border:none;outline:none;background:transparent;font-family:var(--font-sans);font-size:15px;color:var(--color-text-default)" />
+        <span style="font-family:var(--font-mono);font-size:11px;padding:2px 7px;border-radius:6px;background:var(--color-bg-muted);color:var(--color-text-subtle)">esc</span>
+      </div>
+      <div style="max-height:340px;overflow:auto;padding:6px">
+        <sc-for list="{{ palette }}" as="it" hint-placeholder-count="6">
+          <button onClick="{{ it.onSelect }}" style="display:flex;align-items:center;gap:11px;width:100%;padding:10px 12px;border:none;background:transparent;border-radius:9px;cursor:pointer;text-align:left;font-family:var(--font-sans)" style-hover="background:var(--color-bg-muted)">
+            <span style="{{ it.kindStyle }}">{{ it.kind }}</span>
+            <span style="flex:1;font-size:13.5px;color:var(--color-text-default)">{{ it.label }}</span>
+            <span style="font-size:12px;color:var(--color-text-subtle);font-family:var(--font-mono)">{{ it.hint }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══ ALERT DRAWER ══ -->
+  <sc-if value="{{ hasDrawer }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ drawer.onClose }}" style="position:fixed;inset:0;z-index:45;background:rgba(8,12,20,.42);display:flex;justify-content:flex-end">
+    <div onClick="{{ stop }}" style="width:min(420px,92vw);height:100%;background:var(--color-bg-default);border-left:1px solid var(--color-border-default);box-shadow:-16px 0 40px rgba(0,0,0,.25);display:flex;flex-direction:column;animation:lyra-rise .2s ease">
+      <div style="display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--color-border-default)">
+        <span style="width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;font-weight:700;font-size:15px;background:{{ drawer.tint }};color:{{ drawer.tone }}">{{ drawer.glyph }}</span>
+        <div style="flex:1;min-width:0"><div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600">{{ drawer.sev }} incident</div><div style="font-size:11.5px;color:var(--color-text-subtle);font-family:var(--font-mono)">{{ drawer.time }}</div></div>
+        <button onClick="{{ drawer.onClose }}" style="width:30px;height:30px;border-radius:8px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-subtle);cursor:pointer;font-size:16px;line-height:1" style-hover="background:var(--color-bg-muted)">×</button>
+      </div>
+      <div style="flex:1;overflow:auto;padding:20px">
+        <div style="font-size:16px;font-weight:600;line-height:1.35;margin-bottom:14px">{{ drawer.msg }}</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--color-text-subtle)">Robot</span><span style="font-family:var(--font-mono)">{{ drawer.robot }}</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--color-text-subtle)">Zone</span><span>{{ drawer.zone }}</span></div>
+        </div>
+        <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--color-text-placeholder);font-weight:600;margin-bottom:12px">Timeline</div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ drawer.timeline }}" as="e" hint-placeholder-count="3">
+            <div style="display:flex;gap:12px;padding-bottom:16px">
+              <div style="display:flex;flex-direction:column;align-items:center;flex:none"><span style="width:9px;height:9px;border-radius:9999px;background:{{ e.color }};margin-top:3px"></span><span style="flex:1;width:2px;background:var(--color-border-default);margin-top:3px"></span></div>
+              <div style="flex:1"><div style="font-size:13px">{{ e.text }}</div><div style="font-size:11px;color:var(--color-text-subtle);font-family:var(--font-mono);margin-top:2px">{{ e.t }}</div></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;gap:9px;padding:16px 20px;border-top:1px solid var(--color-border-default)">
+        <button onClick="{{ drawer.onAssign }}" style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-bg-muted)">Assign</button>
+        <button onClick="{{ drawer.onAck }}" style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-bg-muted)">Acknowledge</button>
+        <button onClick="{{ drawer.onResolve }}" style="flex:1;padding:10px;border-radius:8px;border:none;background:var(--color-action-primary);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-sans)" style-hover="background:var(--color-action-primary-hover)">Resolve</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══ TOASTS ══ -->
+  <div style="position:fixed;right:22px;bottom:22px;z-index:60;display:flex;flex-direction:column;gap:10px;align-items:flex-end">
+    <sc-for list="{{ toasts }}" as="t" hint-placeholder-count="0">
+      <div style="display:flex;align-items:center;gap:11px;min-width:240px;max-width:360px;padding:12px 15px;background:var(--color-bg-default);border:1px solid var(--color-border-default);border-left:3px solid {{ t.accent }};border-radius:10px;box-shadow:0 10px 28px rgba(0,0,0,.2);animation:lyra-rise .2s ease">
+        <span style="width:7px;height:7px;border-radius:9999px;background:{{ t.accent }};flex:none"></span>
+        <span style="font-size:13px;font-weight:500">{{ t.msg }}</span>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:900},&quot;defaultTheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;'dark'|'light'&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;liveTelemetry&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;plantName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Quantum&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    this.ZC = { active:'var(--green-500)', idle:'var(--gray-400)', charging:'var(--blue-500)', fault:'var(--red-500)' };
+    this.zones = [
+      { id:'asm-a', name:'Assembly A', kind:'Assembly line', x:3, y:7, w:26, h:38, color:'var(--blue-500)', n:4 },
+      { id:'asm-b', name:'Assembly B', kind:'Assembly line', x:3, y:50, w:26, h:43, color:'var(--blue-500)', n:4 },
+      { id:'pick', name:'Pick / Pack', kind:'Warehouse', x:33, y:7, w:33, h:86, color:'var(--green-500)', n:8 },
+      { id:'weld', name:'Weld Cells', kind:'Welding', x:70, y:7, w:27, h:40, color:'var(--yellow-500)', n:4 },
+      { id:'charge', name:'Charging', kind:'Charge dock', x:70, y:52, w:27, h:17, color:'var(--gray-400)', n:2 },
+      { id:'maint', name:'Maintenance', kind:'Service bay', x:70, y:76, w:27, h:17, color:'var(--gray-400)', n:2 },
+    ];
+    this.taskPool = {
+      'asm-a':['Torque fasten side panel','Install wiring loom','Fit door module','Seat dashboard cluster'],
+      'asm-b':['QC inspect frame weld','Attach battery tray','Route coolant line','Mount suspension arm'],
+      'pick':['Pick order #A-4471','Pack carton — 12 units','Palletize outbound','Replenish bin 34-C','Sort inbound totes','Scan & stow'],
+      'weld':['Spot weld B-pillar seam','Weld cross-member bracket','Grind weld flush','Inspect weld porosity'],
+      'charge':['Fast charge to 100%','Balancing cells'],
+      'maint':['Awaiting diagnostics','Actuator service'],
+    };
+    this.plants = [
+      { id:'mer4', name: props.plantName || 'Meridian — Building 4', line:'Assembly & pick', online:'17/24' },
+      { id:'mer2', name:'Meridian — Building 2', line:'Sub-assembly', online:'12/16' },
+      { id:'aur1', name:'Aurora — Plant 1', line:'Welding & paint', online:'28/34' },
+      { id:'kite', name:'Kite Logistics DC', line:'Warehouse pick/pack', online:'40/48' },
+    ];
+    this.plantProfiles = {
+      mer4: { idleBias:0.14 },
+      mer2: { counts:{'asm-a':3,'asm-b':3,'pick':4,'weld':2,'charge':2,'maint':2}, idleBias:0.22 },
+      aur1: { counts:{'asm-a':6,'asm-b':6,'pick':6,'weld':10,'charge':3,'maint':3}, idleBias:0.10 },
+      kite: { counts:{'asm-a':2,'asm-b':2,'pick':30,'weld':2,'charge':8,'maint':4}, idleBias:0.16 },
+    };
+    this.workOrders = [
+      { id:'WO-3391', robot:'HX-224', title:'Replace shoulder actuator', pri:'High', status:'Open', age:'2h', tech:'—' },
+      { id:'WO-3388', robot:'HX-231', title:'Recalibrate force-torque sensor', pri:'Medium', status:'In progress', age:'5h', tech:'J. Okafor' },
+      { id:'WO-3384', robot:'HX-207', title:'Gripper pad wear — replace', pri:'Medium', status:'Open', age:'9h', tech:'—' },
+      { id:'WO-3379', robot:'HX-218', title:'Firmware rollback 4.2.1 → 4.1.9', pri:'Low', status:'In progress', age:'1d', tech:'M. Adeyemi' },
+      { id:'WO-3371', robot:'HX-212', title:'Coolant top-up + leak check', pri:'Low', status:'Open', age:'1d', tech:'—' },
+    ];
+    this.docks = [
+      { id:'DK-01', kw:22, type:'Fast' },
+      { id:'DK-02', kw:22, type:'Fast' },
+      { id:'DK-03', kw:11, type:'Standard' },
+      { id:'DK-04', kw:11, type:'Standard' },
+      { id:'DK-05', kw:11, type:'Standard' },
+      { id:'DK-06', kw:7, type:'Trickle' },
+      { id:'DK-07', kw:7, type:'Trickle' },
+      { id:'DK-08', kw:22, type:'Fast', offline:true },
+    ];
+    this.noGoZones = [
+      { name:'AGV cross-lane', x:29.5, y:8, w:3, h:85 },
+      { name:'HV cabinet — keep out', x:66.5, y:8, w:3, h:39 },
+    ];
+    this.parts = [
+      { sku:'ACT-SH-02', name:'Shoulder actuator', stock:3, min:2, loc:'A-14' },
+      { sku:'GRP-PAD-11', name:'Gripper pad set', stock:1, min:4, loc:'B-03' },
+      { sku:'FTS-CAL-01', name:'Force-torque sensor', stock:6, min:2, loc:'A-09' },
+      { sku:'CLT-2L', name:'Coolant — 2L', stock:12, min:6, loc:'C-21' },
+      { sku:'BRG-HIP-04', name:'Hip bearing', stock:0, min:3, loc:'A-17' },
+      { sku:'BLT-M8', name:'M8 fastener kit', stock:24, min:10, loc:'D-02' },
+    ];
+    this.routing = [
+      { channel:'Floor console', target:'All operators on shift', sev:['critical','warning','info'] },
+      { channel:'Pager — on-call', target:'J. Okafor · maint lead', sev:['critical'] },
+      { channel:'Slack #floor-ops', target:'Ops + supervisors', sev:['critical','warning'] },
+      { channel:'Email digest', target:'Plant manager', sev:['critical'] },
+      { channel:'SMS escalation', target:'Safety officer', sev:['critical'] },
+    ];
+    const robots = this.makeRobots();
+    this.state = {
+      theme: props.defaultTheme === 'light' ? 'light' : 'dark',
+      view: 'fleet',
+      fleetView: 'cards',
+      expandedZones: this.zones.reduce((a,z)=>(a[z.id]=true,a),{}),
+      selected: null,
+      zoneFilter: 'all',
+      plant: 'mer4',
+      plantMenu: false,
+      paletteOpen: false,
+      paletteQuery: '',
+      selectedAlert: null,
+      toasts: [],
+      robots,
+      alerts: this.makeAlerts(robots),
+      jobs: this.makeJobs(robots),
+      throughput: this.makeThroughput(),
+      clock: this.fmtClock(),
+      estopAll: false,
+      tick: 0,
+      handoverNotes: '',
+      hoChecks: [false, false, false],
+      mapMode: 'live',
+      alertTab: 'incidents',
+      rules: [
+        { id:'batt', name:'Low battery', metric:'State of charge', op:'below', value:20, unit:'%', sev:'warning', enabled:true, action:'Auto-dispatch to charge · notify floor lead' },
+        { id:'temp', name:'Motor over-temp', metric:'Any joint temp', op:'above', value:55, unit:'°C', sev:'critical', enabled:true, action:'E-stop unit · page on-call tech' },
+        { id:'geo', name:'Geofence breach', metric:'Position', op:'enters', value:0, unit:'no-go zone', sev:'critical', enabled:true, action:'Halt unit · notify safety officer' },
+        { id:'cycle', name:'Cycle-time drift', metric:'Cycle time', op:'above', value:18, unit:'%', sev:'info', enabled:true, action:'Log for trend analysis' },
+        { id:'vibe', name:'Vibration spike', metric:'Actuator vibration', op:'above', value:3, unit:'×base', sev:'warning', enabled:false, action:'Open a work order' },
+      ],
+    };
+    this.toastId = 0;
+  }
+  rnd(a,b){ return a + Math.random()*(b-a); }
+  ri(a,b){ return Math.floor(this.rnd(a,b+1)); }
+  pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+  fmtClock(){ const d=new Date(); return d.toLocaleTimeString('en-GB',{hour12:false}); }
+
+  makeRobots(profile){
+    profile = profile || this.plantProfiles[this.state?this.state.plant:'mer4'] || {};
+    const counts = profile.counts || {};
+    const idleBias = profile.idleBias!=null ? profile.idleBias : 0.14;
+    const models = { 'asm-a':'Vulcan A2', 'asm-b':'Vulcan A2', 'pick':'Kestrel P3', 'weld':'Forge W1', 'charge':'Kestrel P3', 'maint':'Vulcan A2' };
+    let n = 1; const out = [];
+    this.zones.forEach(z=>{
+      const zn = counts[z.id]!=null ? counts[z.id] : z.n;
+      for(let i=0;i<zn;i++){
+        let status='active';
+        if(z.id==='charge') status='charging';
+        else if(z.id==='maint') status = i===0?'fault':'idle';
+        else if(Math.random()<idleBias) status='idle';
+        const id = 'HX-' + String(200+n).padStart(3,'0');
+        const pad=3;
+        out.push({
+          uid:n, id, model:models[z.id], zoneId:z.id,
+          status,
+          battery: status==='charging'? this.rnd(30,70) : this.rnd(22,99),
+          progress: status==='active'? this.rnd(5,95): (status==='fault'?this.rnd(20,80):0),
+          x: this.rnd(z.x+pad, z.x+z.w-pad),
+          y: this.rnd(z.y+pad, z.y+z.h-pad),
+          vx: this.rnd(-0.4,0.4), vy: this.rnd(-0.4,0.4),
+          task: this.pick(this.taskPool[z.id]),
+          cycleTime: this.ri(28,74),
+          uptime: this.ri(6,190),
+          temp: this.ri(34,52),
+          payload: +this.rnd(0,14).toFixed(1),
+          net: this.ri(72,99),
+          safety: status==='fault'?'estop':'ok',
+          human: false,
+          cyclesDone: this.ri(40,220),
+          mtbf: this.ri(160,920),
+          nextService: this.ri(-6,140),
+          pmInterval: this.pick([120,168,240]),
+          hist: Array.from({length:18},(_,k)=>Math.max(8,Math.min(100, 60 + Math.round(Math.sin(k/2)*18) + this.ri(-10,10)))),
+          joints: this.makeJoints(status),
+          log: this.seedLog(status),
+        });
+        n++;
+      }
+    });
+    // put a human near one active pick robot
+    const pr = out.find(r=>r.zoneId==='pick' && r.status==='active');
+    if(pr){ pr.human=true; pr.safety='human'; }
+    return out;
+  }
+  seedLog(status){
+    const base=[
+      {time:'−2m', color:'var(--green-500)', text:'Cycle completed — within tolerance'},
+      {time:'−9m', color:'var(--blue-500)', text:'Task assigned by scheduler'},
+      {time:'−14m', color:'var(--gray-400)', text:'Path re-planned around obstacle'},
+      {time:'−31m', color:'var(--green-500)', text:'Calibration check passed'},
+      {time:'−52m', color:'var(--blue-500)', text:'Returned from charge dock at 98%'},
+    ];
+    if(status==='fault') base.unshift({time:'now', color:'var(--red-500)', text:'FAULT — joint torque limit exceeded'});
+    return base;
+  }
+  makeJoints(status){
+    const names=['Neck','L-shoulder','R-shoulder','L-elbow','R-elbow','Torso','L-hip','R-hip'];
+    return names.map((n,i)=>{ let st='ok'; if(status==='fault'&&i===1) st='fault'; else if(Math.random()<0.08) st='warn'; return { name:n, st, temp:this.ri(30,54), load:this.ri(10,88) }; });
+  }
+  zoneById(id){ return this.zones.find(z=>z.id===id); }
+  zoneName(id){ return this.zoneById(id).name; }
+  sparkPoints(hist){ const n=hist.length, w=200, h=42; return hist.map((v,i)=>`${(i/(n-1)*w).toFixed(1)},${(h-(v/100)*h).toFixed(1)}`).join(' '); }
+  addToast(msg,kind){ const id=++this.toastId; this.setState(s=>({toasts:[...s.toasts,{id,msg,kind:kind||'info'}]})); setTimeout(()=>this.setState(s=>({toasts:s.toasts.filter(t=>t.id!==id)})),3200); }
+  togglePalette(v){ this.setState(s=>({paletteOpen: v!==undefined?v:!s.paletteOpen, paletteQuery:''})); }
+  switchPlant(p){ const robots=this.makeRobots(this.plantProfiles[p.id]||{}); this.setState({ plant:p.id, plantMenu:false, robots, alerts:this.makeAlerts(robots), jobs:this.makeJobs(robots), throughput:this.makeThroughput(), selected:null, selectedAlert:null, zoneFilter:'all', view:'fleet', estopAll:false, expandedZones:this.zones.reduce((a,z)=>(a[z.id]=true,a),{}) }); this.addToast('Switched to '+p.name); }
+  toggleMapMode(m){ this.setState({mapMode:m}); }
+  setAlertTab(t){ this.setState({alertTab:t}); }
+  bumpRule(id,delta){ this.setState(s=>({ rules:s.rules.map(r=>{ if(r.id!==id) return r; const cap=r.id==='temp'?90:100; const v=Math.max(0,Math.min(cap, r.value+delta)); return {...r,value:v}; }) })); }
+  toggleRule(id){ const cur=this.state.rules.find(r=>r.id===id); this.setState(s=>({ rules:s.rules.map(r=> r.id===id?{...r,enabled:!r.enabled}:r) })); this.addToast('Rule '+(cur&&cur.enabled?'disabled':'enabled')); }
+
+  makeAlerts(robots){
+    const now=Date.now();
+    const f = robots.find(r=>r.status==='fault');
+    const hz = robots.find(r=>r.human);
+    const lowb = robots.slice().sort((a,b)=>a.battery-b.battery)[0];
+    return [
+      { id:'AL-1', sev:'critical', robot:f?f.id:'HX-224', zone:'Weld Cells', msg:'E-stop triggered — joint torque limit exceeded', ts:now-60000, acked:false, resolved:false },
+      { id:'AL-2', sev:'warning', robot:hz?hz.id:'HX-210', zone:'Pick / Pack', msg:'Personnel detected in active zone — speed limited', ts:now-240000, acked:false, resolved:false },
+      { id:'AL-3', sev:'warning', robot:lowb?lowb.id:'HX-206', zone:this.zoneName(lowb?lowb.zoneId:'asm-a'), msg:'Battery below 20% — schedule charge', ts:now-420000, acked:false, resolved:false },
+      { id:'AL-4', sev:'info', robot:'HX-212', zone:'Assembly A', msg:'Cycle time 18% above target', ts:now-900000, acked:true, resolved:false },
+      { id:'AL-5', sev:'info', robot:'HX-219', zone:'Pick / Pack', msg:'Firmware 4.2.1 applied successfully', ts:now-1500000, acked:true, resolved:false },
+    ];
+  }
+  makeJobs(robots){
+    const active=robots.filter(r=>r.status==='active');
+    const jobs=[];
+    let n=4471;
+    const rows=[
+      ['Palletize outbound — dock 3','Warehouse','High','inprogress',null],
+      ['Torque fasten side panel','Assembly A','High','inprogress',null],
+      ['Spot weld B-pillar seam','Welding','Medium','inprogress',null],
+      ['Pick order #A-4482','Warehouse','Medium','inprogress',null],
+      ['QC inspect frame weld','Assembly B','Low','inprogress',null],
+      ['Replenish bin 34-C','Warehouse','Medium','queued','—'],
+      ['Install wiring loom','Assembly A','High','queued','—'],
+      ['Weld cross-member bracket','Welding','Low','queued','—'],
+      ['Sort inbound totes','Warehouse','Low','queued','—'],
+      ['Mount suspension arm','Assembly B','Medium','blocked','—'],
+      ['Route coolant line','Assembly B','High','blocked','—'],
+      ['Pack carton — 12 units','Warehouse','Medium','done',null],
+      ['Grind weld flush','Welding','Low','done',null],
+      ['Fit door module','Assembly A','Medium','done',null],
+      ['Scan & stow — aisle 7','Warehouse','Low','done',null],
+    ];
+    rows.forEach((r,i)=>{
+      const robot = r[4]!==null ? r[4] : (active[i%Math.max(1,active.length)]||{id:'—'}).id;
+      jobs.push({ id:'JOB-'+(n+i), title:r[0], zone:r[1], priority:r[2], status:r[3], robot, progress:r[3]==='inprogress'?this.rnd(10,90):(r[3]==='done'?100:0), eta:r[3]==='inprogress'?this.ri(2,24)+'m':(r[3]==='queued'?'—':(r[3]==='done'?'done':'held')) });
+    });
+    return jobs;
+  }
+  makeThroughput(){
+    const out=[]; const now=new Date();
+    for(let i=11;i>=0;i--){ const d=new Date(now.getTime()-i*3600000); out.push({ label:String(d.getHours()).padStart(2,'0'), h:this.ri(42,92), cur:i===0 }); }
+    return out;
+  }
+
+  componentDidMount(){
+    this.clockT = setInterval(()=>this.setState({clock:this.fmtClock()}), 1000);
+    if(this.props.liveTelemetry !== false){ this.teleT = setInterval(()=>this.tick(), 1400); }
+    this.keyH = (e)=>{
+      if((e.metaKey||e.ctrlKey) && (e.key==='k'||e.key==='K')){ e.preventDefault(); this.togglePalette(); }
+      else if(e.key==='Escape'){ this.setState({paletteOpen:false, selectedAlert:null, plantMenu:false}); }
+    };
+    window.addEventListener('keydown', this.keyH);
+  }
+  componentWillUnmount(){ clearInterval(this.clockT); clearInterval(this.teleT); window.removeEventListener('keydown', this.keyH); }
+
+  tick(){
+    this.setState(s=>{
+      const robots = s.robots.map(r=>{
+        if(r.status==='active'){
+          let {battery,progress,x,y,vx,vy,cyclesDone,net,temp}=r;
+          progress += this.rnd(2,7);
+          let cyc=false;
+          if(progress>=100){ progress-=100; cyc=true; cyclesDone++; }
+          battery=Math.max(6, battery-0.14);
+          vx+=this.rnd(-0.15,0.15); vy+=this.rnd(-0.15,0.15);
+          vx=Math.max(-0.6,Math.min(0.6,vx)); vy=Math.max(-0.6,Math.min(0.6,vy));
+          x+=vx; y+=vy;
+          const z=this.zoneById(r.zoneId), p=2.5;
+          if(x<z.x+p){x=z.x+p;vx=Math.abs(vx);} if(x>z.x+z.w-p){x=z.x+z.w-p;vx=-Math.abs(vx);}
+          if(y<z.y+p){y=z.y+p;vy=Math.abs(vy);} if(y>z.y+z.h-p){y=z.y+z.h-p;vy=-Math.abs(vy);}
+          net=Math.max(60,Math.min(99, net+this.ri(-2,2)));
+          temp=Math.max(32,Math.min(58, temp+this.ri(-1,1)));
+          const status = battery<12 ? 'idle' : 'active';
+          return {...r,battery,progress,x,y,vx,vy,cyclesDone,net,temp,status};
+        }
+        if(r.status==='charging'){
+          let battery=Math.min(100, r.battery+0.9);
+          return {...r, battery, status: battery>=100?'idle':'charging'};
+        }
+        return r;
+      });
+      let throughput=s.throughput;
+      if(s.tick%3===0){ throughput=s.throughput.slice(); const last=throughput[throughput.length-1]; throughput[throughput.length-1]={...last,h:Math.max(40,Math.min(95,last.h+this.ri(-4,5)))}; }
+      const jobs=s.jobs.map(j=> j.status==='inprogress'? {...j, progress:Math.min(99, j.progress+this.rnd(1,4))} : j);
+      let alerts=s.alerts;
+      if(s.tick>0 && s.tick%9===0){
+        const cand=robots.filter(r=>r.status==='active');
+        if(cand.length){ const r=this.pick(cand); const opts=[
+          {sev:'info', msg:'Cycle completed — batch milestone reached'},
+          {sev:'warning', msg:'Gripper slip detected — retry succeeded'},
+          {sev:'info', msg:'Path re-planned around transient obstacle'},
+          {sev:'warning', msg:'Vibration above baseline — monitoring'},
+        ]; const o=this.pick(opts);
+          alerts=[{ id:'AL-'+Date.now(), sev:o.sev, robot:r.id, zone:this.zoneName(r.zoneId), msg:o.msg, ts:Date.now(), acked:false, resolved:false }, ...s.alerts].slice(0,24);
+        }
+      }
+      return { robots, throughput, jobs, alerts, tick:s.tick+1 };
+    });
+  }
+
+  // ── commands ──
+  updRobot(uid, patch){ this.setState(s=>({ robots:s.robots.map(r=> r.uid===uid?{...r,...(typeof patch==='function'?patch(r):patch)}:r) })); }
+  logEvent(uid, text, color){ this.setState(s=>({ robots:s.robots.map(r=> r.uid===uid?{...r, log:[{time:'now',color,text},...r.log].slice(0,12)}:r) })); }
+  pauseRobot(uid){ const was=this.state.robots.find(x=>x.uid===uid); this.setState(s=>({ robots:s.robots.map(r=>{ if(r.uid!==uid) return r; const ns=r.status==='active'?'idle':'active'; return {...r,status:ns,safety:'ok'};})})); const nowActive = was && was.status!=='active'; this.logEvent(uid, nowActive?'Resumed by operator':'Paused by operator','var(--gray-400)'); this.addToast((was?was.id:'Robot')+(nowActive?' resumed':' paused')); }
+  estopRobot(uid){ this.updRobot(uid, {status:'fault', safety:'estop'}); this.logEvent(uid,'E-STOP engaged by operator','var(--red-500)'); const r=this.state.robots.find(x=>x.uid===uid); this.pushAlert('critical', r?r.id:'', r?this.zoneName(r.zoneId):'', 'E-stop engaged by operator'); }
+  chargeRobot(uid){ const z=this.zoneById('charge'); const r=this.state.robots.find(x=>x.uid===uid); this.updRobot(uid, {status:'charging', zoneId:'charge', task:'Fast charge to 100%', x:this.rnd(z.x+3,z.x+z.w-3), y:this.rnd(z.y+3,z.y+z.h-3)}); this.logEvent(uid,'Dispatched to charge dock','var(--blue-500)'); this.addToast((r?r.id:'Robot')+' sent to charge dock'); }
+  recallRobot(uid){ const z=this.zoneById('maint'); const r=this.state.robots.find(x=>x.uid===uid); this.updRobot(uid, {status:'idle', zoneId:'maint', task:'Awaiting diagnostics', safety:'ok', x:this.rnd(z.x+3,z.x+z.w-3), y:this.rnd(z.y+3,z.y+z.h-3)}); this.logEvent(uid,'Recalled to maintenance bay','var(--gray-400)'); this.addToast((r?r.id:'Robot')+' recalled to maintenance bay'); }
+  reassignRobot(uid){ const r=this.state.robots.find(x=>x.uid===uid); if(!r) return; const t=this.pick(this.taskPool[r.zoneId]); this.updRobot(uid,{task:t, progress:0, status:'active', safety:'ok'}); this.logEvent(uid,'New task assigned: '+t,'var(--blue-500)'); this.addToast(r.id+' reassigned: '+t); }
+  pushAlert(sev,robot,zone,msg){ this.setState(s=>({ alerts:[{id:'AL-'+Date.now(),sev,robot,zone,msg,ts:Date.now(),acked:false,resolved:false},...s.alerts].slice(0,24) })); }
+  ackAlert(id){ this.setState(s=>({ alerts:s.alerts.map(a=>a.id===id?{...a,acked:true}:a) })); this.addToast('Alert acknowledged'); }
+  resolveAlert(id){ this.setState(s=>({ alerts:s.alerts.filter(a=>a.id!==id), selectedAlert: s.selectedAlert===id?null:s.selectedAlert })); this.addToast('Alert resolved','success'); }
+  toggleEstopAll(){ this.setState(s=>{ if(!s.estopAll){ return { estopAll:true, robots:s.robots.map(r=> r.status==='active'?{...r,status:'fault',safety:'estop'}:r) }; } return { estopAll:false, robots:s.robots.map(r=> r.safety==='estop'?{...r,status:r.battery>15?'active':'idle',safety:'ok'}:r) }; }); this.addToast(this.state.estopAll?'E-stop released — fleet resuming':'GLOBAL E-STOP engaged','danger'); }
+
+  // ── styling helpers ──
+  navStyle(v){ const on=this.state.view===v; return `display:flex;align-items:center;gap:11px;width:100%;padding:8px 8px;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-sans);font-size:13.5px;font-weight:${on?600:500};text-align:left;background:${on?'var(--color-bg-brand-subtle)':'transparent'};color:${on?'var(--color-text-brand)':'var(--color-text-subtle)'}`; }
+  badgeStyle(status){ const map={active:['var(--green-500)','#fff'],idle:['var(--color-bg-muted)','var(--color-text-subtle)'],charging:['var(--blue-500)','#fff'],fault:['var(--red-500)','#fff']}; const [bg,fg]=map[status]; const outline = status==='idle'?'':''; return `display:inline-flex;align-items:center;padding:2px 9px;border-radius:9999px;font-size:11px;font-weight:600;letter-spacing:.01em;background:${bg};color:${fg}`; }
+  battColor(b){ return b>50?'var(--green-500)':(b>=20?'var(--yellow-500)':'var(--red-500)'); }
+  statusLabel(s){ return {active:'Active',idle:'Idle',charging:'Charging',fault:'Fault'}[s]; }
+
+  renderVals(){
+    const s=this.state;
+    const isDark = s.theme==='dark';
+    const robots=s.robots;
+    const count=(st)=>robots.filter(r=>r.status===st).length;
+    const kpi={ total:robots.length, active:count('active'), idle:count('idle'), charging:count('charging'), fault:count('fault') };
+    const total=robots.length||1;
+    const dist={ active:kpi.active/total*100, idle:kpi.idle/total*100, charging:kpi.charging/total*100, fault:kpi.fault/total*100 };
+    const avgBatt=Math.round(robots.reduce((a,r)=>a+r.battery,0)/total);
+    const unitsHr=robots.filter(r=>r.status==='active').reduce((a,r)=>a+Math.round(3600/r.cycleTime),0);
+    const oee = Math.round(kpi.active/total*100*0.92);
+
+    // zone stats
+    const zoneStats=this.zones.map(z=>{ const c=robots.filter(r=>r.zoneId===z.id).length; return { id:z.id, name:z.name, color:z.color, count:c, pct: Math.round(c/6*100) }; });
+
+    // nav
+    const nav={ fleet:this.navStyle('fleet'), map:this.navStyle('map'), tasks:this.navStyle('tasks'), charge:this.navStyle('charge'), alerts:this.navStyle('alerts'), analytics:this.navStyle('analytics'), maint:this.navStyle('maint'), rollup:this.navStyle('rollup'), handover:this.navStyle('handover') };
+    const unack=s.alerts.filter(a=>!a.acked).length;
+
+    // fleet kpis
+    const fleetKpis=[
+      { label:'Units online', value:kpi.active+'/'+kpi.total, delta:'', deltaColor:'var(--color-text-subtle)', helper:'active on the floor' },
+      { label:'Avg battery', value:avgBatt+'%', delta:avgBatt>=60?'nominal':'watch', deltaColor:avgBatt>=60?'var(--color-text-success)':'var(--color-text-warning)', helper:'fleet mean charge' },
+      { label:'Throughput', value:unitsHr, delta:'+4.1%', deltaColor:'var(--color-text-success)', helper:'units / hour' },
+      { label:'Open faults', value:kpi.fault, delta:kpi.fault>0?'attention':'clear', deltaColor:kpi.fault>0?'var(--color-text-danger)':'var(--color-text-success)', helper:'require action' },
+    ];
+
+    // filters
+    const fdef=[['all','All'],['active','Active'],['charging','Charging'],['idle','Idle'],['fault','Fault']];
+    const filterStyle=(id)=>{ const on=s.zoneFilter===id; return `padding:6px 12px;border-radius:9999px;border:1px solid ${on?'var(--color-action-primary)':'var(--color-border-default)'};background:${on?'var(--color-bg-brand-subtle)':'var(--color-bg-default)'};color:${on?'var(--color-text-brand)':'var(--color-text-subtle)'};font-size:12.5px;font-weight:${on?600:500};cursor:pointer;font-family:var(--font-sans)`; };
+    const filters=fdef.map(([id,label])=>({ label, style:filterStyle(id), count: id==='all'?robots.length:count(id), onClick:()=>this.setState({zoneFilter:id}) }));
+
+    const fmtRobot=(r)=>({
+      uid:r.uid, id:r.id, model:r.model, zoneName:this.zoneName(r.zoneId),
+      color:this.ZC[r.status], pulse: r.status==='active'?'animation:lyra-pulse 1.6s ease-in-out infinite':(r.status==='fault'?'animation:lyra-blink 1s step-end infinite':''),
+      statusLabel:this.statusLabel(r.status), badge:this.badgeStyle(r.status),
+      battery:Math.round(r.battery), battLabel:Math.round(r.battery)+'%', battColor:this.battColor(r.battery),
+      progress:Math.round(r.progress), progLabel:Math.round(r.progress)+'%',
+      task:r.task, open:()=>this.setState({selected:r.uid, view:'detail'}),
+    });
+    const filtered=(s.zoneFilter==='all'?robots:robots.filter(r=>r.status===s.zoneFilter));
+    const fleetRobots=filtered.map(fmtRobot);
+    const segStyle=(v)=>{ const on=s.fleetView===v; return `display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:7px;border:none;cursor:pointer;font-family:var(--font-sans);font-size:12.5px;font-weight:${on?600:500};background:${on?'var(--color-bg-default)':'transparent'};color:${on?'var(--color-text-default)':'var(--color-text-subtle)'};box-shadow:${on?'0 1px 2px rgba(0,0,0,.08)':'none'}`; };
+    const fleetGroups=this.zones.map(z=>{ const zr=filtered.filter(r=>r.zoneId===z.id); const cnt=(st)=>zr.filter(r=>r.status===st).length; const exp=s.expandedZones[z.id]!==false; return {
+      id:z.id, name:z.name, color:z.color, count:zr.length, active:cnt('active'), idle:cnt('idle'), charging:cnt('charging'), fault:cnt('fault'),
+      expanded:exp, chevron:exp?'▾':'▸', onToggle:()=>this.setState(st=>({expandedZones:{...st.expandedZones,[z.id]:st.expandedZones[z.id]===false}})),
+      rows:zr.map(fmtRobot),
+    }; }).filter(g=>g.count>0);
+
+    // map
+    const zonesLayout=this.zones.map(z=>({ name:z.name, kind:z.kind, x:z.x, y:z.y, w:z.w, h:z.h, color:z.color, border:'color-mix(in srgb, '+z.color+' 40%, transparent)', fill:'color-mix(in srgb, '+z.color+' 8%, transparent)' }));
+    const mapRobots=robots.map(r=>({ id:r.id, x:+r.x.toFixed(2), y:+r.y.toFixed(2), color:this.ZC[r.status], isFault:r.status==='fault', pulse:r.status==='active'?'animation:lyra-pulse 1.8s ease-in-out infinite':'', open:()=>this.setState({selected:r.uid,view:'detail'}) }));
+    const humans=robots.filter(r=>r.human).map(r=>({ x:+(r.x+3).toFixed(2), y:+(r.y-4).toFixed(2) }));
+    const safety={ estops:kpi.fault, estopColor:kpi.fault>0?'var(--color-text-danger)':'var(--color-text-default)', humans:humans.length, slowed:humans.length };
+    const mapSeg=(v)=>{ const on=s.mapMode===v; return `display:flex;align-items:center;gap:6px;padding:6px 13px;border-radius:7px;border:none;cursor:pointer;font-family:var(--font-sans);font-size:12.5px;font-weight:${on?600:500};background:${on?'var(--color-bg-default)':'transparent'};color:${on?'var(--color-text-default)':'var(--color-text-subtle)'};box-shadow:${on?'0 1px 2px rgba(0,0,0,.08)':'none'}`; };
+    const mapCols=10, mapRows=6; const heatGrid=Array.from({length:mapCols*mapRows},()=>0);
+    robots.forEach(r=>{ const c=Math.max(0,Math.min(mapCols-1,Math.floor(r.x/100*mapCols))); const rw=Math.max(0,Math.min(mapRows-1,Math.floor(r.y/100*mapRows))); heatGrid[rw*mapCols+c]++; });
+    const maxHeat=Math.max(1,...heatGrid);
+    const heatCells=heatGrid.map((d,idx)=>{ const c=idx%mapCols, rw=Math.floor(idx/mapCols); const t=d/maxHeat; const hue= t>0.66?'var(--red-500)':(t>0.33?'var(--yellow-500)':'var(--green-500)'); return { show:d>0, x:+(c/mapCols*100).toFixed(2), y:+(rw/mapRows*100).toFixed(2), w:+(100/mapCols).toFixed(2), h:+(100/mapRows).toFixed(2), color:`color-mix(in srgb, ${hue} ${Math.round(24+t*56)}%, transparent)` }; }).filter(cl=>cl.show);
+    const noGoZones=this.noGoZones;
+    const chargeZ=this.zoneById('charge'); const chgN=robots.filter(r=>r.status==='charging');
+    const dockMarkers=this.docks.map((d,i)=>{ const col=i%4, row=Math.floor(i/4); const occ=d.offline?null:chgN[i]; const c= d.offline?'var(--gray-400)':(occ?'var(--blue-500)':'transparent'); const b= d.offline?'var(--gray-400)':(occ?'var(--blue-500)':'var(--green-500)'); return { x:+(chargeZ.x+(col+0.5)*(chargeZ.w/4)).toFixed(2), y:+(chargeZ.y+(row+0.5)*(chargeZ.h/2)).toFixed(2), color:c, border:b, title:d.id+(d.offline?' · offline':(occ?' · '+occ.id:' · free')) }; });
+
+    // jobs
+    const jcol=(st,title,color)=>{ const js=s.jobs.filter(j=>j.status===st).map(j=>({ id:j.id, title:j.title, priority:j.priority, prioStyle:this.prioStyle(j.priority), robot:j.robot, meta:j.eta, showBar:st==='inprogress', progress:Math.round(j.progress) })); return { title, color, count:js.length, jobs:js }; };
+    const jobColumns=[ jcol('queued','Queued','var(--gray-400)'), jcol('inprogress','In progress','var(--blue-500)'), jcol('blocked','Blocked','var(--red-500)'), jcol('done','Done','var(--green-500)') ];
+
+    // alerts
+    const sevCounts={ critical:s.alerts.filter(a=>a.sev==='critical').length, warning:s.alerts.filter(a=>a.sev==='warning').length, info:s.alerts.filter(a=>a.sev==='info').length };
+    const sevMap={ critical:['var(--red-500)','color-mix(in srgb,var(--red-500) 16%,transparent)','!'], warning:['var(--yellow-500)','color-mix(in srgb,var(--yellow-500) 18%,transparent)','!'], info:['var(--blue-500)','color-mix(in srgb,var(--blue-500) 15%,transparent)','i'] };
+    const alertList=s.alerts.map((a,i)=>{ const [tone,tint,glyph]=sevMap[a.sev]; return {
+      glyph, tone, tint, msg:a.msg, robot:a.robot, zone:a.zone, time:this.ago(a.ts),
+      rowStyle:`display:flex;align-items:center;gap:13px;padding:14px 16px;cursor:pointer;${i>0?'border-top:1px solid var(--color-border-default);':''}${a.acked?'opacity:.62;':''}`,
+      strike:'', open:!a.acked, acked:a.acked,
+      onOpen:()=>this.setState({selectedAlert:a.id, view:'incident'}),
+      onAck:(e)=>{ if(e&&e.stopPropagation)e.stopPropagation(); this.ackAlert(a.id); },
+      onResolve:(e)=>{ if(e&&e.stopPropagation)e.stopPropagation(); this.resolveAlert(a.id); },
+    }; });
+    const alertTabStyle=(v)=>{ const on=s.alertTab===v; return `padding:7px 14px;border-radius:8px;border:none;cursor:pointer;font-family:var(--font-sans);font-size:12.5px;font-weight:${on?600:500};background:${on?'var(--color-bg-default)':'transparent'};color:${on?'var(--color-text-default)':'var(--color-text-subtle)'};box-shadow:${on?'0 1px 2px rgba(0,0,0,.08)':'none'}`; };
+    const _sevTone={critical:'var(--red-500)',warning:'var(--yellow-500)',info:'var(--blue-500)'};
+    const _sevBg={critical:'color-mix(in srgb,var(--red-500) 15%,transparent)',warning:'color-mix(in srgb,var(--yellow-500) 22%,transparent)',info:'color-mix(in srgb,var(--blue-500) 15%,transparent)'};
+    const rulesView=s.rules.map(r=>{ const vl = r.id==='geo'?'zone':(r.unit==='%'?r.value+'%':(r.unit==='°C'?r.value+'°C':(r.unit==='×base'?r.value+'×':String(r.value)))); const disp = r.id==='geo'?'Unit enters a mapped no-go zone':`${r.metric} ${r.op} ${vl}`; return {
+      id:r.id, name:r.name, display:disp, valueLabel:vl, action:r.action, enabled:r.enabled, editable:r.id!=='geo',
+      sevLabel:r.sev.charAt(0).toUpperCase()+r.sev.slice(1), sevTone:_sevTone[r.sev], sevBg:_sevBg[r.sev],
+      rowStyle:`display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--color-border-default);${r.enabled?'':'opacity:.5;'}`,
+      toggleStyle:`position:relative;width:38px;height:22px;border-radius:9999px;border:none;cursor:pointer;flex:none;background:${r.enabled?'var(--color-action-primary)':'var(--color-bg-muted)'};transition:background .12s`,
+      knobStyle:`position:absolute;top:2px;left:${r.enabled?'18px':'2px'};width:18px;height:18px;border-radius:9999px;background:#fff;transition:left .12s;box-shadow:0 1px 2px rgba(0,0,0,.2)`,
+      dec:()=>this.bumpRule(r.id,-1), inc:()=>this.bumpRule(r.id,1), toggle:()=>this.toggleRule(r.id),
+    }; });
+    const routing=this.routing.map(rt=>({ channel:rt.channel, target:rt.target, chips:['critical','warning','info'].map(sv=>({ label:sv.charAt(0).toUpperCase()+sv.slice(1), style:`padding:2px 9px;border-radius:9999px;font-size:10.5px;font-weight:600;${rt.sev.includes(sv)?`background:${_sevBg[sv]};color:${_sevTone[sv]}`:'background:var(--color-bg-muted);color:var(--color-text-placeholder);opacity:.55'}` })) }));
+
+    // analytics
+    const anaKpis=[
+      { label:'Units / hour', value:unitsHr, delta:'+4.1%', deltaColor:'var(--color-text-success)', helper:'vs last shift' },
+      { label:'OEE', value:oee+'%', delta:'+1.8%', deltaColor:'var(--color-text-success)', helper:'availability × perf' },
+      { label:'Avg cycle', value:Math.round(robots.reduce((a,r)=>a+r.cycleTime,0)/total)+'s', delta:'-2.3%', deltaColor:'var(--color-text-success)', helper:'shorter is better' },
+      { label:'Fleet uptime', value:'99.1%', delta:'+0.2%', deltaColor:'var(--color-text-success)', helper:'rolling 24h' },
+    ];
+    const throughput=s.throughput.map(b=>({ label:b.label, h:b.h, cur:b.cur, fill:b.cur?'var(--color-action-primary)':'color-mix(in srgb,var(--color-action-primary) 32%,transparent)' }));
+    const utilColors=['var(--blue-500)','var(--blue-500)','var(--green-500)','var(--yellow-500)','var(--gray-400)','var(--gray-400)'];
+    const utilization=this.zones.map((z,i)=>{ const zr=robots.filter(r=>r.zoneId===z.id); const act=zr.filter(r=>r.status==='active').length; const pct= zr.length? Math.round(act/zr.length*100):0; return { name:z.name, pct, color:utilColors[i] }; });
+    const days7=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const upMin=96, upMax=100, upW=280, upH=90;
+    const uptimeVals=[98.6,99.1,98.2,99.4,99.0,97.9,99.1];
+    const upXY=(v,i)=>`${(i/(uptimeVals.length-1)*upW).toFixed(1)},${(upH-((v-upMin)/(upMax-upMin))*upH).toFixed(1)}`;
+    const uptimePts=uptimeVals.map(upXY).join(' ');
+    const uptimeArea=`0,${upH} `+uptimePts+` ${upW},${upH}`;
+    const uptimeDots=uptimeVals.map((v,i)=>({ label:days7[i], val:v.toFixed(1) }));
+    const uptimeLast=uptimeVals[uptimeVals.length-1].toFixed(1)+'%';
+    const _mg={}; robots.forEach(r=>{ (_mg[r.model]=_mg[r.model]||[]).push(r.mtbf); });
+    const _mgv=Object.entries(_mg).map(([m,a])=>({ name:m, v:Math.round(a.reduce((x,y)=>x+y,0)/a.length) }));
+    const _mgMax=Math.max(1,..._mgv.map(x=>x.v));
+    const mtbfByModel=_mgv.sort((a,b)=>b.v-a.v).map(x=>({ name:x.name, mtbf:x.v+'h', pct:Math.max(6,Math.round(x.v/_mgMax*100)) }));
+    const _cc=[41,38,44,52,47,29,36]; const _ccMax=Math.max(..._cc);
+    const chargeCycles=_cc.map((v,i)=>({ label:days7[i], v, h:Math.max(6,Math.round(v/_ccMax*100)), fill:i===_cc.length-1?'var(--color-action-primary)':'color-mix(in srgb,var(--color-action-primary) 34%,transparent)' }));
+
+    // detail
+    let sel=null;
+    const sr=robots.find(r=>r.uid===s.selected);
+    if(sr){
+      sel={
+        id:sr.id, model:sr.model, zoneName:this.zoneName(sr.zoneId), uptime:sr.uptime,
+        color:this.ZC[sr.status], pulse: sr.status==='active'?'animation:lyra-pulse 1.6s ease-in-out infinite':(sr.status==='fault'?'animation:lyra-blink 1s step-end infinite':''),
+        statusLabel:this.statusLabel(sr.status), badge:this.badgeStyle(sr.status),
+        task:sr.task, progress:Math.round(sr.progress), progLabel:Math.round(sr.progress)+'%', cycleTime:sr.cycleTime,
+        telemetry:[
+          {label:'Battery', value:Math.round(sr.battery)+'%'},
+          {label:'Motor temp', value:sr.temp+'°C'},
+          {label:'Payload', value:sr.payload+' kg'},
+          {label:'Network', value:sr.net+'%'},
+        ],
+        log:sr.log,
+        spark:this.sparkPoints(sr.hist),
+        sparkLast:sr.hist[sr.hist.length-1],
+        joints:sr.joints.map(j=>({ name:j.name, temp:j.temp+'°C', load:j.load+'%', dot:j.st==='fault'?'var(--red-500)':(j.st==='warn'?'var(--yellow-500)':'var(--green-500)'), label:j.st==='fault'?'Fault':(j.st==='warn'?'Warn':'OK'), labelColor:j.st==='fault'?'var(--color-text-danger)':(j.st==='warn'?'var(--color-text-warning)':'var(--color-text-success)') })),
+        mtbf:sr.mtbf+'h',
+        nextServiceLabel: sr.nextService<=0?'Overdue':'in '+sr.nextService+'h',
+        serviceColor: sr.nextService<=0?'var(--color-text-danger)':(sr.nextService<24?'var(--color-text-warning)':'var(--color-text-default)'),
+        serviceBar: Math.max(4, Math.min(100, Math.round((1-Math.min(1,Math.max(0,sr.nextService)/140))*100))),
+        serviceBarColor: sr.nextService<=0?'var(--red-500)':(sr.nextService<24?'var(--yellow-500)':'var(--green-500)'),
+        drive:(dir)=>{ this.logEvent(sr.uid,'Manual teleop — '+dir,'var(--blue-500)'); this.addToast(sr.id+' teleop: '+dir); },
+        driveFwd:()=>{ this.logEvent(sr.uid,'Manual teleop — forward','var(--blue-500)'); this.addToast(sr.id+' teleop: forward'); },
+        driveBack:()=>{ this.logEvent(sr.uid,'Manual teleop — reverse','var(--blue-500)'); this.addToast(sr.id+' teleop: reverse'); },
+        driveLeft:()=>{ this.logEvent(sr.uid,'Manual teleop — rotate left','var(--blue-500)'); this.addToast(sr.id+' teleop: rotate left'); },
+        driveRight:()=>{ this.logEvent(sr.uid,'Manual teleop — rotate right','var(--blue-500)'); this.addToast(sr.id+' teleop: rotate right'); },
+        driveStop:()=>{ this.logEvent(sr.uid,'Manual teleop — stop','var(--red-500)'); this.addToast(sr.id+' teleop: stop','danger'); },
+      };
+    }
+    const selPauseLabel = sr && sr.status==='active' ? 'Pause' : 'Resume';
+
+    // maintenance / reliability
+    const svcRank=(r)=> (r.status==='fault'?0:100) + r.nextService;
+    const maintRows=robots.slice().sort((a,b)=>svcRank(a)-svcRank(b)).map(r=>({
+      uid:r.uid, id:r.id, model:r.model, zoneName:this.zoneName(r.zoneId),
+      badge:this.badgeStyle(r.status), statusLabel:this.statusLabel(r.status),
+      mtbf:r.mtbf+'h', battery:Math.round(r.battery)+'%',
+      pmPct: Math.max(3,Math.min(100,Math.round((r.pmInterval-r.nextService)/r.pmInterval*100))),
+      pmLabel: Math.max(0,Math.round(r.pmInterval-r.nextService))+'/'+r.pmInterval+'h',
+      pmColor: r.nextService<=0?'var(--red-500)':(r.nextService<24?'var(--yellow-500)':'var(--color-action-primary)'),
+      service: r.nextService<=0?'Overdue':r.nextService+'h', serviceColor: r.nextService<=0?'var(--color-text-danger)':(r.nextService<24?'var(--color-text-warning)':'var(--color-text-subtle)'),
+      health: r.status==='fault'?'Needs service': (r.nextService<=0?'Service due':(r.nextService<24?'Due soon':'Healthy')),
+      healthColor: r.status==='fault'?'var(--red-500)':(r.nextService<=0?'var(--red-500)':(r.nextService<24?'var(--yellow-500)':'var(--green-500)')),
+      open:()=>this.setState({selected:r.uid, view:'detail'}),
+    }));
+    const woStyle=(st)=> st==='In progress'?'color-mix(in srgb,var(--blue-500) 16%,transparent)':'var(--color-bg-muted)';
+    const woColor=(st)=> st==='In progress'?'var(--color-text-brand)':'var(--color-text-subtle)';
+    const workOrders=this.workOrders.map(w=>({ ...w, prioStyle:this.prioStyle(w.pri), chipBg:woStyle(w.status), chipColor:woColor(w.status) }));
+    const maintKpis=[
+      { label:'Open work orders', value:this.workOrders.filter(w=>w.status==='Open').length, helper:'unassigned + queued' },
+      { label:'Service due <24h', value:robots.filter(r=>r.nextService<24).length, helper:'schedule now' },
+      { label:'Overdue', value:robots.filter(r=>r.nextService<=0).length, helper:'past interval' },
+      { label:'Fleet MTBF', value:Math.round(robots.reduce((a,r)=>a+r.mtbf,0)/total)+'h', helper:'mean between failures' },
+    ];
+    const parts=this.parts.map(p=>{ const out=p.stock===0, low=!out&&p.stock<p.min; return { sku:p.sku, name:p.name, loc:p.loc, stock:p.stock, min:p.min, state: out?'Out':(low?'Low':'OK'), chipBg: out?'color-mix(in srgb,var(--red-500) 15%,transparent)':(low?'color-mix(in srgb,var(--yellow-500) 22%,transparent)':'var(--color-bg-muted)'), chipColor: out?'var(--color-text-danger)':(low?'var(--color-text-warning)':'var(--color-text-subtle)') }; });
+    const outOfService=robots.filter(r=>r.status==='fault'||r.nextService<=0).map(r=>({ id:r.id, model:r.model, zone:this.zoneName(r.zoneId), reason: r.status==='fault'?'Active fault':'PM overdue', reasonColor: r.status==='fault'?'var(--red-500)':'var(--yellow-500)', open:()=>this.setState({selected:r.uid,view:'detail'}) }));
+
+    // plant rollup (manager)
+    const rollLines=this.zones.filter(z=>z.id!=='charge'&&z.id!=='maint').map((z,i)=>{ const zr=robots.filter(r=>r.zoneId===z.id); const act=zr.filter(r=>r.status==='active').length; const av= zr.length?act/zr.length:0; const perf=0.86+i*0.02; const oeeV=Math.round(av*perf*100); const uh=zr.filter(r=>r.status==='active').reduce((a,r)=>a+Math.round(3600/r.cycleTime),0); return { name:z.name, color:z.color, units:zr.length, oee:oeeV, oeeColor: oeeV>=80?'var(--green-500)':(oeeV>=60?'var(--yellow-500)':'var(--red-500)'), unitsHr:uh, uptime:(97+ (i%3)*0.7).toFixed(1)+'%' }; });
+    const shiftBars=['A','B','C'].map((sh,i)=>({ label:'Shift '+sh, h:[72,88,54][i], cur:i===1, fill:i===1?'var(--color-action-primary)':'color-mix(in srgb,var(--color-action-primary) 32%,transparent)' }));
+    const rollupKpis=[
+      { label:'Plant OEE', value:oee+'%', delta:'+1.8%', deltaColor:'var(--color-text-success)', helper:'shift B to date' },
+      { label:'Units / shift', value:'2,140', delta:'+112', deltaColor:'var(--color-text-success)', helper:'projected' },
+      { label:'Cost / unit', value:'$3.18', delta:'-$0.06', deltaColor:'var(--color-text-success)', helper:'vs target $3.30' },
+      { label:'Labor hours saved', value:'184', delta:'+9%', deltaColor:'var(--color-text-success)', helper:'vs manual baseline' },
+    ];
+
+    // charging & docks
+    const chgRobots=robots.filter(r=>r.status==='charging');
+    let drawKw=0;
+    const chgBays=this.docks.map((d,i)=>{
+      if(d.offline) return { id:d.id, type:d.type, charging:false, available:false, offline:true };
+      const occ=chgRobots[i];
+      if(occ){
+        drawKw+=d.kw;
+        const soc=Math.round(occ.battery);
+        const base={Fast:42,Standard:78,Trickle:130}[d.type]||60;
+        const etaMin=Math.max(1,Math.round((100-soc)/100*base));
+        return { id:d.id, type:d.type, charging:true, available:false, offline:false, robot:occ.id, soc, socLabel:soc+'%', ringColor:this.battColor(occ.battery), rate:d.kw+' kW', eta:'~'+etaMin+'m', open:()=>this.setState({selected:occ.uid,view:'detail'}) };
+      }
+      return { id:d.id, type:d.type, charging:false, available:true, offline:false };
+    });
+    const bayCount=this.docks.filter(d=>!d.offline).length;
+    const occupied=chgBays.filter(b=>b.charging).length;
+    const avgSoc=chgRobots.length?Math.round(chgRobots.reduce((a,r)=>a+r.battery,0)/chgRobots.length):0;
+    const capKw=120;
+    const chgQueue=robots.filter(r=>r.status!=='charging'&&r.battery<45).sort((a,b)=>a.battery-b.battery).slice(0,6).map(r=>({ id:r.id, zone:this.zoneName(r.zoneId), batt:Math.round(r.battery)+'%', battColor:this.battColor(r.battery), send:()=>this.chargeRobot(r.uid) }));
+    const chgKpis=[
+      { label:'Bays in use', value:occupied+'/'+bayCount, helper:'active chargers' },
+      { label:'Avg dock SoC', value:avgSoc+'%', helper:'units charging' },
+      { label:'In queue', value:chgQueue.length, helper:'awaiting a bay' },
+      { label:'Power draw', value:drawKw+' kW', helper:'of '+capKw+' kW capacity' },
+    ];
+
+    // incident detail
+    let inc=null;
+    const inA=s.alerts.find(a=>a.id===s.selectedAlert);
+    if(inA && s.view==='incident'){
+      const [tone,tint,glyph]=sevMap[inA.sev];
+      const ir=robots.find(r=>r.id===inA.robot);
+      const sevCap=inA.sev.charAt(0).toUpperCase()+inA.sev.slice(1);
+      const affected= ir? robots.filter(r=>r.zoneId===ir.zoneId && r.uid!==ir.uid).slice(0,4):[];
+      const rec={ critical:'Dispatch the on-call technician now. The unit is isolated via E-stop — do not clear the fault until the joint torque limit has been inspected.', warning:'Auto-mitigation applied (zone speed limit / retry). Keep monitoring; escalate to a work order if it recurs within the shift.', info:'No action required. Logged to the shift record for trend analysis.' }[inA.sev];
+      inc={
+        tone, tint, glyph, title:inA.msg, robot:inA.robot, zone:inA.zone, time:this.ago(inA.ts),
+        chip: inA.acked?'display:inline-flex;align-items:center;padding:3px 11px;border-radius:9999px;font-size:11.5px;font-weight:600;background:var(--color-bg-muted);color:var(--color-text-subtle)':`display:inline-flex;align-items:center;padding:3px 11px;border-radius:9999px;font-size:11.5px;font-weight:600;background:${tint};color:${tone}`,
+        chipLabel: inA.acked?'Acknowledged':'Open · '+sevCap,
+        timeline:[
+          { t:this.ago(inA.ts), color:tone, text:'Incident raised — '+inA.msg },
+          { t:'+2s', color:'var(--blue-500)', text:'Telemetry snapshot captured and zone speed-limited automatically' },
+          { t:'+5s', color:'var(--blue-500)', text:'Operators in '+inA.zone+' notified on the floor console' },
+          { t:inA.acked?'ack':'pending', color:inA.acked?'var(--green-500)':'var(--gray-400)', text:inA.acked?'Acknowledged by operator':'Awaiting operator acknowledgement' },
+        ],
+        recommended:rec,
+        details:[
+          { label:'Robot', value:inA.robot },
+          { label:'Zone', value:inA.zone },
+          { label:'Severity', value:sevCap },
+          { label:'First seen', value:this.ago(inA.ts) },
+          { label:'Status', value:inA.acked?'Acknowledged':'Open' },
+        ],
+        hasRobot:!!ir,
+        snapshot: ir?[ {label:'Battery',value:Math.round(ir.battery)+'%'},{label:'Motor temp',value:ir.temp+'°C'},{label:'Payload',value:ir.payload+' kg'},{label:'Network',value:ir.net+'%'} ]:[],
+        hasAffected: affected.length>0,
+        affected: affected.map(r=>({ id:r.id, model:r.model, status:this.statusLabel(r.status), badge:this.badgeStyle(r.status), open:()=>this.setState({selected:r.uid,view:'detail'}) })),
+        openRobot: ir?()=>this.setState({selected:ir.uid,view:'detail'}):()=>{},
+        onAck:()=>this.ackAlert(inA.id),
+        onAssign:()=>this.addToast('Incident assigned to on-call tech'),
+        onResolve:()=>{ this.resolveAlert(inA.id); this.setState({view:'alerts'}); },
+      };
+    }
+
+    // shift handover
+    const openWO=this.workOrders.filter(w=>w.status!=='Done');
+    const blockedJobs=s.jobs.filter(j=>j.status==='blocked');
+    const unresolved=s.alerts.filter(a=>!a.acked);
+    const carryover=[
+      ...unresolved.filter(a=>a.sev!=='info').map(a=>({ tone:sevMap[a.sev][0], label:a.msg, meta:a.robot+' · '+a.zone, kind:a.sev==='critical'?'Critical':'Warning' })),
+      ...openWO.map(w=>({ tone:'var(--yellow-500)', label:w.title, meta:w.robot+' · '+w.pri+' priority', kind:'Work order' })),
+      ...blockedJobs.map(j=>({ tone:'var(--red-500)', label:j.title, meta:j.robot+' · '+j.zone, kind:'Blocked job' })),
+    ];
+    const hoWatch=robots.filter(r=>r.status==='fault'||r.nextService<24).sort((a,b)=>svcRank(a)-svcRank(b)).slice(0,6).map(r=>({
+      id:r.id, open:()=>this.setState({selected:r.uid,view:'detail'}),
+      health: r.status==='fault'?'Fault — needs service':(r.nextService<=0?'Service overdue':'Service due soon'),
+      healthColor: r.status==='fault'||r.nextService<=0?'var(--red-500)':'var(--yellow-500)',
+      service: r.nextService<=0?'Overdue':'in '+r.nextService+'h',
+      serviceColor: r.nextService<=0?'var(--color-text-danger)':'var(--color-text-warning)',
+    }));
+    const unitsShift=unitsHr*6;
+    const hoKpis=[
+      { label:'Units produced', value:unitsShift.toLocaleString(), helper:'shift B to now' },
+      { label:'Shift OEE', value:oee+'%', helper:'availability × perf' },
+      { label:'Open incidents', value:unresolved.length, helper:'carried to shift C' },
+      { label:'Carryover items', value:openWO.length+blockedJobs.length, helper:'work orders + blocked' },
+    ];
+    const hoItems=['Production log reconciled','Open incidents briefed to shift C','Charging & staging confirmed'];
+    const hoChecklist=hoItems.map((label,i)=>({ label, done:s.hoChecks[i], toggle:()=>this.setState(st=>{ const c=st.hoChecks.slice(); c[i]=!c[i]; return {hoChecks:c}; }), textStyle:s.hoChecks[i]?'text-decoration:line-through;color:var(--color-text-subtle)':'' }));
+
+    // plant switcher
+    const curPlant=this.plants.find(p=>p.id===s.plant)||this.plants[0];
+    const plantList=this.plants.map(p=>({ id:p.id, name:p.name, line:p.line, online: p.id===s.plant? kpi.active+'/'+kpi.total : p.online, active:p.id===s.plant, rowStyle:`display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border:none;background:${p.id===s.plant?'var(--color-bg-brand-subtle)':'transparent'};cursor:pointer;text-align:left;font-family:var(--font-sans);border-radius:8px`, onSelect:()=>this.switchPlant(p) }));
+
+    // command palette
+    const q=(s.paletteQuery||'').toLowerCase();
+    const nn=(v,label)=>({ kind:'Navigate', label, hint:'', onSelect:()=>this.setState({view:v, paletteOpen:false}) });
+    let palItems=[ nn('fleet','Fleet overview'), nn('map','Floor map'), nn('tasks','Job queue'), nn('charge','Charging & docks'), nn('alerts','Alerts & incidents'), nn('analytics','Analytics'), nn('maint','Maintenance'), nn('rollup','Plant rollup'), nn('handover','Shift handover'),
+      { kind:'Action', label:'Global E-STOP — all units', onSelect:()=>{ this.setState({paletteOpen:false}); this.toggleEstopAll(); } },
+      { kind:'Action', label:(isDark?'Switch to light theme':'Switch to dark theme'), onSelect:()=>{ this.setState(st=>({theme:st.theme==='dark'?'light':'dark', paletteOpen:false})); } },
+    ];
+    robots.forEach(r=>palItems.push({ kind:'Robot', label:r.id+' — '+r.model, hint:this.zoneName(r.zoneId), onSelect:()=>this.setState({selected:r.uid, view:'detail', paletteOpen:false}) }));
+    const palette=palItems.filter(it=> !q || it.label.toLowerCase().includes(q) || it.kind.toLowerCase().includes(q)).slice(0,8).map(it=>({ ...it, kindStyle:`font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding:2px 6px;border-radius:5px;background:var(--color-bg-muted);color:var(--color-text-subtle)` }));
+
+    // alert drawer
+    let drawer=null;
+    const da=s.alerts.find(a=>a.id===s.selectedAlert);
+    if(da){ const [tone,tint,glyph]=sevMap[da.sev]; drawer={
+      glyph, tone, tint, sev:da.sev.charAt(0).toUpperCase()+da.sev.slice(1), msg:da.msg, robot:da.robot, zone:da.zone, time:this.ago(da.ts), acked:da.acked,
+      timeline:[ {t:this.ago(da.ts), text:'Alert raised by '+da.robot, color:tone}, {t:'auto', text:'Zone speed-limited, telemetry snapshot captured', color:'var(--blue-500)'}, {t:'pending', text:da.acked?'Acknowledged by operator':'Awaiting operator acknowledgement', color:'var(--gray-400)'} ],
+      onClose:()=>this.setState({selectedAlert:null}),
+      onAck:()=>this.ackAlert(da.id), onResolve:()=>this.resolveAlert(da.id),
+      onAssign:()=>{ this.addToast('Incident assigned to on-call tech'); },
+    }; }
+
+    return {
+      rootClass: isDark? 'lyra dark':'lyra',
+      plantName: this.props.plantName || 'Meridian — Building 4',
+      clock:s.clock,
+      themeGlyph: isDark? '☀' : '☾',
+      toggleTheme: ()=>this.setState(st=>({theme: st.theme==='dark'?'light':'dark'})),
+      goFleet:()=>this.setState({view:'fleet'}), goMap:()=>this.setState({view:'map'}), goTasks:()=>this.setState({view:'tasks'}), goAlerts:()=>this.setState({view:'alerts'}), goAnalytics:()=>this.setState({view:'analytics'}),
+      goMaint:()=>this.setState({view:'maint'}), goRollup:()=>this.setState({view:'rollup'}),
+      goCharge:()=>this.setState({view:'charge'}), goHandover:()=>this.setState({view:'handover'}),
+      isCharge:s.view==='charge', chg:{ occupied, bayCount, draw:drawKw, drawPct:Math.round(drawKw/capKw*100), cap:capKw }, chgKpis, chgBays, chgQueue, chgQueueCount:chgQueue.length, hasQueue:chgQueue.length>0, noQueue:chgQueue.length===0,
+      isIncident:s.view==='incident'&&!!inc, inc,
+      isHandover:s.view==='handover', hoKpis, carryover, carryCount:carryover.length, hoWatch, hoChecklist, handoverNotes:s.handoverNotes, onHandoverNote:(e)=>this.setState({handoverNotes:e.target.value}), signHandover:()=>this.addToast('Handover submitted to shift C','success'),
+      nav, unackCount:unack, hasAlerts:unack>0,
+      zoneStats,
+      isFleet:s.view==='fleet', isMap:s.view==='map', isTasks:s.view==='tasks', isAlerts:s.view==='alerts', isAnalytics:s.view==='analytics', isDetail:s.view==='detail'&&!!sel, isMaint:s.view==='maint', isRollup:s.view==='rollup',
+      kpi, dist, fleetKpis, filters, fleetRobots, fleetGroups,
+      isCards:s.fleetView!=='table', isTable:s.fleetView==='table',
+      segCards:segStyle('cards'), segTable:segStyle('table'),
+      goCards:()=>this.setState({fleetView:'cards'}), goTable:()=>this.setState({fleetView:'table'}),
+      zonesLayout, mapRobots, humans, safety,
+      heatCells, noGoZones, dockMarkers,
+      isMapLive:s.mapMode==='live', isMapHeat:s.mapMode==='heat',
+      mapLiveStyle:mapSeg('live'), mapHeatStyle:mapSeg('heat'),
+      setMapLive:()=>this.toggleMapMode('live'), setMapHeat:()=>this.toggleMapMode('heat'),
+      jobColumns, jobCount:s.jobs.length,
+      sevCounts, alertList,
+      isIncidentsTab:s.alertTab==='incidents', isRulesTab:s.alertTab==='rules',
+      tabIncStyle:alertTabStyle('incidents'), tabRulesStyle:alertTabStyle('rules'),
+      setIncTab:()=>this.setAlertTab('incidents'), setRulesTab:()=>this.setAlertTab('rules'),
+      rulesView, routing,
+      anaKpis, throughput, utilization,
+      uptimePts, uptimeArea, uptimeDots, uptimeLast, mtbfByModel, chargeCycles,
+      sel,
+      cmdPause: sr?()=>this.pauseRobot(sr.uid):()=>{}, cmdPauseLabel:selPauseLabel,
+      cmdPauseStyle:`padding:9px;border-radius:8px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans)`,
+      cmdReassign: sr?()=>this.reassignRobot(sr.uid):()=>{},
+      cmdCharge: sr?()=>this.chargeRobot(sr.uid):()=>{},
+      cmdRecall: sr?()=>this.recallRobot(sr.uid):()=>{},
+      cmdEstop: sr?()=>this.estopRobot(sr.uid):()=>{},
+      estopStyle:`display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;border:1px solid ${s.estopAll?'var(--red-500)':'var(--color-border-strong)'};background:${s.estopAll?'var(--red-500)':'transparent'};color:${s.estopAll?'#fff':'var(--color-text-danger)'};font-size:12.5px;font-weight:600;cursor:pointer;font-family:var(--font-sans)`,
+      estopLabel: s.estopAll?'Release all':'Global E-STOP',
+      estopPulse: s.estopAll?'animation:lyra-pulse 1s infinite':'',
+      toggleEstop:()=>this.toggleEstopAll(),
+      curPlantName:curPlant.name, curPlantLine:curPlant.line, plantList, plantMenu:s.plantMenu,
+      togglePlantMenu:()=>this.setState(st=>({plantMenu:!st.plantMenu})),
+      maintRows, workOrders, maintKpis,
+      parts, outOfService, outCount:outOfService.length, hasOut:outOfService.length>0, noOut:outOfService.length===0,
+      rollLines, shiftBars, rollupKpis,
+      palette, paletteOpen:s.paletteOpen, paletteQuery:s.paletteQuery,
+      onPaletteInput:(e)=>this.setState({paletteQuery:e.target.value}),
+      closePalette:()=>this.setState({paletteOpen:false}),
+      openPalette:()=>this.togglePalette(true),
+      hasDrawer:false,
+      toasts:s.toasts.map(t=>({ id:t.id, msg:t.msg, accent: t.kind==='danger'?'var(--red-500)':(t.kind==='success'?'var(--green-500)':'var(--blue-500)') })),
+      padStyle:`display:flex;align-items:center;justify-content:center;padding:12px;border-radius:9px;border:1px solid var(--color-border-default);background:transparent;color:var(--color-text-default);cursor:pointer`,
+      stop:(e)=>{ if(e&&e.stopPropagation)e.stopPropagation(); },
+    };
+  }
+  prioStyle(p){ const m={High:['var(--red-500)','color-mix(in srgb,var(--red-500) 14%,transparent)'],Medium:['var(--yellow-700)','color-mix(in srgb,var(--yellow-500) 20%,transparent)'],Low:['var(--color-text-subtle)','var(--color-bg-muted)']}; const [fg,bg]=m[p]; return `padding:1px 8px;border-radius:9999px;font-size:10.5px;font-weight:600;background:${bg};color:${fg}`; }
+  ago(ts){ const s=Math.floor((Date.now()-ts)/1000); if(s<60) return s+'s ago'; const m=Math.floor(s/60); if(m<60) return m+'m ago'; return Math.floor(m/60)+'h ago'; }
+}
+</script>
+</body>
+</html>

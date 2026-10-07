@@ -54,6 +54,7 @@ Then open http://localhost:5173. The layout is designed for desktop widths (abou
 ## Project structure
 
 ```
+design/            Snapshot of the Claude Design source the app currently matches
 src/
   App.jsx          State, simulation and actions; derives everything the views render
   data.js          Static fixtures: zones, plants, docks, parts, work orders, rules
@@ -64,9 +65,13 @@ src/
   test/            Vitest + Testing Library suites
 ```
 
+## Updating from the design
+
+The app is built from the `Control Panel.dc.html` file in the Claude Design project. [`design/`](design) holds the version the code currently matches. When the design changes, diff the new file against that snapshot, port only what changed, then replace the snapshot in the same pull request.
+
 ## Testing
 
-The suite (60 tests) drives the app the way a user would with [Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com), covering navigation, filters, E-stop, plant switching, alerts and rules, robot commands, the command palette, the simulation, charging, handover and the floor map. `Math.random` is seeded in [`src/test/setup.js`](src/test/setup.js), so every run produces the same fleet.
+The suite drives the app the way a user would with [Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com), covering navigation, filters, E-stop, plant switching, alerts and rules, robot commands, the command palette, the simulation, charging, handover and the floor map. `Math.random` is seeded in [`src/test/setup.js`](src/test/setup.js), so every run produces the same fleet.
 
 ```bash
 npm test

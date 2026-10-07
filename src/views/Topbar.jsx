@@ -53,6 +53,16 @@ export default function Topbar({ v }) {
         <span style={sx(`width:9px;height:9px;border-radius:9999px;background:currentColor;${v.estopPulse}`)} />
         {v.estopLabel}
       </button>
+
+      <div style={sx('width:1px;height:26px;background:var(--color-border-default);flex:none')} />
+      <button title="Account" className={hv(HOVER_MUTED)} style={sx('display:flex;align-items:center;gap:9px;padding:4px 8px 4px 4px;border-radius:9999px;border:1px solid transparent;background:transparent;cursor:pointer;font-family:var(--font-sans);color:var(--color-text-default);flex:none')}>
+        <span style={sx('width:30px;height:30px;border-radius:9999px;background:var(--color-bg-brand-subtle);color:var(--color-text-brand);display:grid;place-items:center;font-weight:600;font-size:12px;flex:none')}>RM</span>
+        <span style={sx('display:flex;flex-direction:column;align-items:flex-start;line-height:1.15')}>
+          <span style={sx('font-size:12.5px;font-weight:500;white-space:nowrap')}>R. Marín</span>
+          <span style={sx('font-size:11px;color:var(--color-text-subtle);white-space:nowrap')}>Line supervisor</span>
+        </span>
+        <Icon name="chevDown" size={14} stroke="var(--color-text-subtle)" />
+      </button>
     </header>
   );
 }
